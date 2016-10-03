@@ -1,0 +1,60 @@
+---
+output: 
+    html_document:
+        css: style.css
+---
+
+```{r setup, include=FALSE}
+load_all()
+
+```
+
+<img style="float: right;" src="logo.png">
+
+# Salton Sea Ambient Air and Meteorological Monitoring Net 
+
+## Imperial Irrigation District
+
+Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date, 
+"%m-%d-%Y")`
+
+Report Date: `r report_date` 
+<hr>
+
+# Data Summary
+
+### Particulate Concentration Data Summary
+
+### Meteorological Data Summary
+
+<p style="page-break-after:always;"></p>
+<img style="float: right;" src="logo.png">
+
+# Salton Sea Ambient Air and Meteorological Monitoring Net
+
+## Imperial Irrigation District
+
+Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date, 
+"%m-%d-%Y")`
+
+Report Date: `r report_date` 
+<hr>
+
+# Data Review
+
+### Data Check Notes
+
+<p style="page-break-after:always;"></p>
+<img style="float: right;" src="logo.png">
+
+# Salton Sea Ambient Air and Meteorological Monitoring Net
+
+## Imperial Irrigation District
+
+Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date, 
+"%m-%d-%Y")`
+
+Report Date: `r report_date` 
+<hr>
+
+# Dust Event
