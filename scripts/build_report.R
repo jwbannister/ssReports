@@ -1,9 +1,10 @@
+load_all()
 library(lubridate)
 rm(list=ls())
 
 start_date <- mdy("03-01-2016") # date to start reporting period
 duration <- 1 # number of months to report 
-end_date <- start_date %m+% months(1) %m-% days(1)
+end_date <- start_date %m+% months(duration) %m-% days(1)
 report_date <- format(Sys.Date(), "%m-%d-%Y")
 file_name <- paste0("~/code/ssReports/output/SS_report_", 
                     month(start_date, label=TRUE), year(start_date))

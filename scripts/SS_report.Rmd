@@ -6,12 +6,20 @@ output:
 
 ```{r setup, include=FALSE}
 load_all()
-
+library(DT)
+library(pander)
+panderOptions('knitr.auto.asis', FALSE)
+panderOptions('table.alignment.rownames', 'left')
+# how many data hours are availabe in report period? For % data capture calc.
+hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00"), tz="UTC"),
+                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00"), tz="UTC"), 
+                by="hour")
+data_hours <- length(hour_seq)
 ```
 
 <img style="float: right;" src="logo.png">
 
-# Salton Sea Ambient Air and Meteorological Monitoring Net 
+# Salton Sea Ambient Air and Meteorological Monitoring  
 
 ## Imperial Irrigation District
 
@@ -21,13 +29,40 @@ Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date,
 Report Date: `r report_date` 
 <hr>
 
-# Data Summary
+# Data Summary - Particulate Concentration
 
-### Particulate Concentration Data Summary
-
-### Meteorological Data Summary
+```{r teom_table, echo=F, results='asis'}
+source("~/code/ssReports/scripts/teom_summary.R")
+pandoc.table(pm10_tbl, caption="PM10", split.cells=8)
+pandoc.table(pm25_tbl, caption="PM25", split.cells=8)
+```
 
 <p style="page-break-after:always;"></p>
+
+<img style="float: right;" src="logo.png">
+
+# Salton Sea Ambient Air and Meteorological Monitoring 
+
+## Imperial Irrigation District
+
+Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date, 
+"%m-%d-%Y")`
+
+Report Date: `r report_date` 
+<hr>
+
+# Data Summary - Meteorological Data 
+
+```{r teom_summary, echo=F, evaulate=F, results='asis'}
+source("~/code/ssReports/scripts/met_summary.R")
+row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")
+for (i in names(met_summary)){
+    pandoc.table(met_summary[[i]], caption=i)
+}
+```
+
+<p style="page-break-after:always;"></p>
+
 <img style="float: right;" src="logo.png">
 
 # Salton Sea Ambient Air and Meteorological Monitoring Net
@@ -40,11 +75,15 @@ Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date,
 Report Date: `r report_date` 
 <hr>
 
-# Data Review
+# Data Review -  Data Check Notes
 
-### Data Check Notes
+```{r flag_table, echo=F, results='asis'}
+source("~/code/ssReports/scripts/flag_summary.R")
+pandoc.table(flag_df, split.cells=8)
+```
 
 <p style="page-break-after:always;"></p>
+
 <img style="float: right;" src="logo.png">
 
 # Salton Sea Ambient Air and Meteorological Monitoring Net

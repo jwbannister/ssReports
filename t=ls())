@@ -1,0 +1,257 @@
+pandoc.table.return           package:pander           R Documentation
+
+_C_r_e_a_t_e _a _t_a_b_l_e
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Creates a Pandoc's markdown style table with optional caption and
+     some other tweaks. See 'Details' below.
+
+_U_s_a_g_e:
+
+     pandoc.table.return(t, caption, digits = panderOptions("digits"),
+       decimal.mark = panderOptions("decimal.mark"),
+       big.mark = panderOptions("big.mark"), round = panderOptions("round"),
+       missing = panderOptions("missing"), justify, style = c("multiline",
+       "grid", "simple", "rmarkdown"),
+       split.tables = panderOptions("table.split.table"),
+       split.cells = panderOptions("table.split.cells"),
+       keep.trailing.zeros = panderOptions("keep.trailing.zeros"),
+       keep.line.breaks = panderOptions("keep.line.breaks"),
+       plain.ascii = panderOptions("plain.ascii"),
+       use.hyphening = panderOptions("use.hyphening"),
+       emphasize.rownames = panderOptions("table.emphasize.rownames"),
+       emphasize.rows, emphasize.cols, emphasize.cells, emphasize.strong.rows,
+       emphasize.strong.cols, emphasize.strong.cells, emphasize.italics.rows,
+       emphasize.italics.cols, emphasize.italics.cells, emphasize.verbatim.rows,
+       emphasize.verbatim.cols, emphasize.verbatim.cells, ...)
+     
+_A_r_g_u_m_e_n_t_s:
+
+       t: data frame, matrix or table
+
+ caption: caption (string) to be shown under the table
+
+  digits: passed to ‘format’. Can be a vector specifying values for
+          each column (has to be the same length as number of columns).
+
+decimal.mark: passed to ‘format’
+
+big.mark: passed to ‘format’
+
+   round: passed to ‘round’. Can be a vector specifying values for each
+          column (has to be the same length as number of columns).
+          Values for non-numeric columns will be disregarded.
+
+ missing: string to replace missing values
+
+ justify: defines alignment in cells passed to ‘format’. Can be ‘left’,
+          ‘right’ or ‘centre’, which latter can be also spelled as
+          ‘center’. Defaults to ‘centre’. Can be abbreviated to a
+          string consisting of the letters ‘l’, ‘c’ and ‘r’ (e.g. 'lcr'
+          instead of c('left', 'centre', 'right').
+
+   style: which Pandoc style to use: ‘simple’, ‘multiline’, ‘grid’ or
+          ‘rmarkdown’
+
+split.tables: where to split wide tables to separate tables. The
+          default value (‘80’) suggests the conventional number of
+          characters used in a line, feel free to change (e.g. to ‘Inf’
+          to disable this feature) if you are not using a VT100
+          terminal any more :)
+
+split.cells: where to split cells' text with line breaks. Default to
+          ‘30’, to disable set to ‘Inf’. Can be also supplied as a
+          vector, for each cell separately (if length(split.cells) ==
+          number of columns + 1, then first value in split.cells if for
+          row names, and others are for columns). Supports relative
+          (percentage) parameters in combination with split.tables.
+
+keep.trailing.zeros: to show or remove trailing zeros in numbers on a
+          column basis width
+
+keep.line.breaks: (default: ‘FALSE’) if to keep or remove line breaks
+          from cells in a table
+
+plain.ascii: (default: ‘FALSE’) if output should be in plain ascii
+          (without markdown markup) or not
+
+use.hyphening: boolean (default: ‘FALSE’) if try to use hyphening when
+          splitting large cells according to table.split.cells.
+          Requires koRpus package.
+
+emphasize.rownames: boolean (default: ‘TRUE’) if row names should be
+          highlighted
+
+emphasize.rows: deprecated for ‘emphasize.italics.rows’ argument
+
+emphasize.cols: deprecated for ‘emphasize.italics.cols’ argument
+
+emphasize.cells: deprecated for ‘emphasize.italics.cells’ argument
+
+emphasize.strong.rows: see ‘emphasize.italics.rows’ but in bold
+
+emphasize.strong.cols: see ‘emphasize.italics.cols’ but in bold
+
+emphasize.strong.cells: see ‘emphasize.italics.cells’ but in bold
+
+emphasize.italics.rows: a vector for a two dimensional table specifying
+          which rows to emphasize
+
+emphasize.italics.cols: a vector for a two dimensional table specifying
+          which cols to emphasize
+
+emphasize.italics.cells: a vector for one-dimensional tables or a
+          matrix like structure with two columns for row and column
+          indexes to be emphasized in two dimensional tables. See e.g.
+          ‘which(..., arr.ind = TRUE)’
+
+emphasize.verbatim.rows: see ‘emphasize.italics.rows’ but in verbatim
+
+emphasize.verbatim.cols: see ‘emphasize.italics.cols’ but in verbatim
+
+emphasize.verbatim.cells: see ‘emphasize.italics.cells’ but in verbatim
+
+     ...: unsupported extra arguments directly placed into ‘/dev/null’
+
+_D_e_t_a_i_l_s:
+
+     This function takes any tabular data as its first argument and
+     will try to make it pretty like: rounding and applying ‘digits’
+     and custom ‘decimal.mark’ to numbers, auto-recognizing if row
+     names should be included, setting alignment of cells and dropping
+     trailing zeros by default.
+
+     ‘pandoc.table’ also tries to split large cells with line breaks or
+     even the whole table to separate parts on demand. Other arguments
+     lets the use to highlight some rows/cells/cells in the table with
+     italic or bold text style.
+
+     For more details please see the parameters above and passed
+     arguments of ‘panderOptions’.
+
+_V_a_l_u_e:
+
+     By default this function outputs (see: ‘cat’) the result. If you
+     would want to catch the result instead, then call
+     ‘pandoc.table.return’ instead.
+
+_N_o_t_e:
+
+     If ‘caption’ is missing, then the value is first checked in ‘t’
+     object's ‘caption’ attribute and if not found in an internal
+     buffer set by ‘link{set.caption}’. ‘justify’ parameter works
+     similarly, see ‘set.alignment’ for details.
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     John MacFarlane (2012): _Pandoc User's Guide_. <URL:
+     http://johnmacfarlane.net/pandoc/README.html>
+
+_S_e_e _A_l_s_o:
+
+     ‘set.caption’, ‘set.alignment’
+
+_E_x_a_m_p_l_e_s:
+
+     pandoc.table(mtcars)
+     
+     ## caption
+     pandoc.table(mtcars, 'Motor Trend Car Road Tests')
+     
+     ## other input/output formats
+     pandoc.table(mtcars[, 1:3], decimal.mark = ',')
+     pandoc.table(mtcars[, 1:3], decimal.mark = ',', justify = 'right')
+     pandoc.table(matrix(sample(1:1000, 25), 5, 5))
+     pandoc.table(matrix(runif(25), 5, 5))
+     pandoc.table(matrix(runif(25), 5, 5), digits = 5)
+     pandoc.table(matrix(runif(25),5,5), round = 1)
+     pandoc.table(table(mtcars$am))
+     pandoc.table(table(mtcars$am, mtcars$gear))
+     pandoc.table(table(state.division, state.region))
+     pandoc.table(table(state.division, state.region), justify = 'centre')
+     
+     m <- data.frame(a = c(1, -500, 10320, 23, 77),
+       b = runif(5),
+       c = c('a', 'bb', 'ccc', 'dddd', 'eeeee'))
+     pandoc.table(m)
+     pandoc.table(m, justify = c('right', 'left', 'centre'))
+     pandoc.table(m, justify = 'rlc') # Same as upper statement
+     
+     ## splitting up too wide tables
+     pandoc.table(mtcars)
+     pandoc.table(mtcars, caption = 'Only once after the first part!')
+     
+     ## tables with line breaks in cells
+     ## NOTE: line breaks are removed from table content in case keep.line.breaks is set to FALSE
+     ## and added automatically based on "split.cells" parameter!
+     t <- data.frame(a = c('hundreds\nof\nmouses', '3 cats'), b=c('FOO is nice', 'BAR\nBAR2'))
+     pandoc.table(t)
+     pandoc.table(t, split.cells = 5)
+     
+     ## exporting tables in other Pandoc styles
+     pandoc.table(m)
+     pandoc.table(m, style = "grid")
+     pandoc.table(m, style = "simple")
+     pandoc.table(t, style = "grid")
+     pandoc.table(t, style = "grid", split.cells = 5)
+     tryCatch(pandoc.table(t, style = "simple", split.cells = 5),
+       error = function(e) 'Yeah, no newline support in simple tables')
+     
+     ## highlight cells
+     t <- mtcars[1:3, 1:5]
+     pandoc.table(t$mpg, emphasize.italics.cells = 1)
+     pandoc.table(t$mpg, emphasize.strong.cells = 1)
+     pandoc.table(t$mpg, emphasize.italics.cells = 1, emphasize.strong.cells = 1)
+     pandoc.table(t$mpg, emphasize.italics.cells = 1:2)
+     pandoc.table(t$mpg, emphasize.strong.cells = 1:2)
+     pandoc.table(t, emphasize.italics.cells = which(t > 20, arr.ind = TRUE))
+     pandoc.table(t, emphasize.italics.cells = which(t == 6, arr.ind = TRUE))
+     pandoc.table(t, emphasize.verbatim.cells = which(t == 6, arr.ind = TRUE))
+     pandoc.table(t, emphasize.verbatim.cells = which(t == 6, arr.ind = TRUE),
+      emphasize.italics.rows = 1)
+     ## with helpers
+     emphasize.cols(1)
+     emphasize.rows(1)
+     pandoc.table(t)
+     
+     emphasize.strong.cells(which(t > 20, arr.ind = TRUE))
+     pandoc.table(t)
+     
+     ### plain.ascii
+     pandoc.table(mtcars[1:3, 1:3], plain.ascii = TRUE)
+     
+     ### keep.line.breaks
+     x <- data.frame(a="Pandoc\nPackage")
+     pandoc.table(x)
+     pandoc.table(x, keep.line.breaks = TRUE)
+     
+     ## split.cells
+     x <- data.frame(a = "foo bar", b = "foo bar")
+     pandoc.table(x, split.cells = 4)
+     pandoc.table(x, split.cells = 7)
+     pandoc.table(x, split.cells = c(4, 7))
+     pandoc.table(x, split.cells = c("20%", "80%"), split.tables = 30)
+     
+     y <- c("aa aa aa", "aaa aaa", "a a a a a", "aaaaa", "bbbb bbbb bbbb", "bb bbb bbbb")
+     y <- matrix(y, ncol = 3, nrow = 2)
+     rownames(y) <- c("rowname one", "rowname two")
+     colnames(y) <- c("colname one", "colname two", "colname three")
+     pandoc.table(y, split.cells = 2)
+     pandoc.table(y, split.cells = 6)
+     pandoc.table(y, split.cells = c(2, 6, 10))
+     pandoc.table(y, split.cells = c(2, Inf, Inf))
+     
+     ## first value used for rownames
+     pander(y, split.cells = c(5, 2, Inf, Inf))
+     pandoc.table(y, split.cells = c(5, 2, Inf, 5, 3, 10))
+     
+     ## when not enough reverting to default values
+     pandoc.table(y, split.cells = c(5, 2))
+     
+     ## split.cells with hyphenation
+     x <- data.frame(a = "Can be also supplied as a vector, for each cell separately",
+            b = "Can be also supplied as a vector, for each cell separately")
+     pandoc.table(x, split.cells = 10, use.hyphening = TRUE)
+     
+
