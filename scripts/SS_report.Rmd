@@ -8,13 +8,9 @@ output:
 load_all()
 library(DT)
 library(pander)
+source("~/code/ssReports/scripts/load.R")
 panderOptions('knitr.auto.asis', FALSE)
 panderOptions('table.alignment.rownames', 'left')
-# how many data hours are availabe in report period? For % data capture calc.
-hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00"), tz="UTC"),
-                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00"), tz="UTC"), 
-                by="hour")
-data_hours <- length(hour_seq)
 ```
 
 <img style="float: right;" src="logo.png">
@@ -31,10 +27,10 @@ Report Date: `r report_date`
 
 # Data Summary - Particulate Concentration
 
-```{r teom_table, echo=F, results='asis'}
+```{r teom_table, echo=F, results='asis', message=F}
 source("~/code/ssReports/scripts/teom_summary.R")
-pandoc.table(pm10_tbl, caption="PM10", split.cells=8)
-pandoc.table(pm25_tbl, caption="PM25", split.cells=8)
+pandoc.table(pm10_tbl, caption="PM10", split.table=Inf)
+pandoc.table(pm25_tbl, caption="PM25", split.table=Inf)
 ```
 
 <p style="page-break-after:always;"></p>
@@ -53,13 +49,22 @@ Report Date: `r report_date`
 
 # Data Summary - Meteorological Data 
 
+<body>
 ```{r teom_summary, echo=F, evaulate=F, results='asis'}
 source("~/code/ssReports/scripts/met_summary.R")
 row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")
-for (i in names(met_summary)){
-    pandoc.table(met_summary[[i]], caption=i)
+for (i in 1:length(met_summary)){
+    if (i==1){
+        pandoc.table(met_summary[[i]], caption=names(met_summary[i]),
+                     split.table=100, split.cells=c("16%", rep("14%", 6)))
+    } else{
+        tmp <- setNames(met_summary[[i]], rep("", length(met_summary[[i]])))
+        pandoc.table(tmp, caption=names(met_summary[i]), split.table=100, 
+                     split.cells=c("16%", rep("14%", 6)))
+    }
 }
 ```
+</body>
 
 <p style="page-break-after:always;"></p>
 
@@ -75,11 +80,33 @@ Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date,
 Report Date: `r report_date` 
 <hr>
 
-# Data Review -  Data Check Notes
+# Data Review -  Data Flags
 
+<h6>
 ```{r flag_table, echo=F, results='asis'}
-source("~/code/ssReports/scripts/flag_summary.R")
-pandoc.table(flag_df, split.cells=8)
+pandoc.table(flag_df, split.table=Inf)
+```
+</h6>
+
+<p style="page-break-after:always;"></p>
+
+<img style="float: right;" src="logo.png">
+
+# Salton Sea Ambient Air and Meteorological Monitoring Net
+
+## Imperial Irrigation District
+
+Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date, 
+"%m-%d-%Y")`
+
+Report Date: `r report_date` 
+<hr>
+
+# Dust Events
+
+```{r list_events, echo=F, message=F, results='asis'}
+source("~/code/ssReports/scripts/events.R")
+pandoc.table(events)
 ```
 
 <p style="page-break-after:always;"></p>
@@ -96,4 +123,18 @@ Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date,
 Report Date: `r report_date` 
 <hr>
 
-# Dust Event
+# Dust Event - `r events$deployment[1]`, `r events$date[1]`
+
+## Description
+
+Comments and notes of event go here.
+
+## Dust Concentration
+```{r timeseries_plot, echo=F}
+print(event_list[[1]]$timeseries)
+```
+
+## Images
+
+
+## PM10 Roses
