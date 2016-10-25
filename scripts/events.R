@@ -4,6 +4,7 @@ library(tidyverse)
 library(lubridate)
 library(ggplot2)
 library(RS3)
+library(RColorBrewer)
 
 pm10_cutoff <- 150
 pm25_cutoff <- 50
@@ -20,9 +21,9 @@ events <- pm_summary %>% ungroup() %>%
 arrange(date)
 event_days <- unique(events$date)
 
-#aws_access <- read.table("~/config/credentials/AWS_cred.txt")[2, 1]
-#aws_secret <- read.table("~/config/credentials/AWS_cred.txt")[4, 1]
-#S3_connect(aws_access, aws_secret, hostname="s3-us-west-2.amazonaws.com")
+aws_access <- read.table("~/config/credentials/AWS_cred.txt")[2, 1]
+aws_secret <- read.table("~/config/credentials/AWS_cred.txt")[4, 1]
+S3_connect(aws_access, aws_secret, hostname="s3-us-west-2.amazonaws.com")
 
 event_list <- vector(mode="list", length=length(event_days))
 names(event_list) <- event_days
@@ -37,22 +38,13 @@ for (i in names(event_list)){
     event_list[[i]]$timeseries <- event_df %>% filter(deployment==worst_loc) %>%
         arrange(datetime) %>%
         gather(pm, conc, pm10:pm25) %>%
+        filter(pm=="pm10") %>%
         ggplot(aes(x=datetime, y=conc)) +
-        geom_path() +
-        facet_grid(pm ~ ., scales="free_y" )
+        geom_path() 
     met_day <- filter(met_tmp, between(hour(datetime), 7, 16))
-    max_hour <- met_day[met_day$ws_10m==max(met_day$ws_10m), ]$datetime
-    event_list[[i]]$image.path <- 
-        filter(image_df, datetime >  max_hour %m-% minutes(59) &
-               datetime < max_hour)$fpath[1]
-    event_list[[i]]$roses <- vector(mode="list", 
-                                    length=length(unique(event_df$deployment)))
-    names(event_list[[i]]$roses) <- unique(event_df$deployment)
-    for (j in unique(event_df$deployment)){
-        deploy_df <- filter(event_df, deployment==j)
-        p1 <- plot_rose_image_only(deploy_df, "pm10", "wd_sonic")
-        event_list[[i]]$roses[[j]] <- p1
-    }
+    max_hour <- hour(met_day[met_day$ws_10m==max(met_day$ws_10m), ]$datetime)
+    event_list[[i]]$image.key <- 
+        substring(filter(image_df, hour(datetime)==max_hour)$s3_url[1], 49)
+    event_list[[i]]$map <- event_plot(loc_df, event_df)
 }
 
-a <- event_plot(loc_df, event_df)

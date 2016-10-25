@@ -66,7 +66,7 @@ loc_df$x <- utmcoord$coords.x1
 loc_df$y <- utmcoord$coords.x2
 
 # pull photo data
-query1 <- paste0("SELECT i.datetime, f.s3_url, f.fpath ", 
+query1 <- paste0("SELECT i.datetime, f.s3_url ", 
                  "FROM images.images i JOIN images.image_files f ", 
                  "ON i.image_file_id=f.image_file_id ", 
                  "WHERE f.image_deployment_id = 2 ", 

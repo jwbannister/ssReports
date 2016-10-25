@@ -102,7 +102,7 @@ Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date,
 Report Date: `r report_date` 
 <hr>
 
-# Dust Events
+# Site Exceedance Days
 
 ```{r list_events, echo=F, message=F, results='asis'}
 source("~/code/ssReports/scripts/events.R")
@@ -111,30 +111,38 @@ pandoc.table(events)
 
 <p style="page-break-after:always;"></p>
 
-<img style="float: right;" src="logo.png">
+```{r event_pages, echo=F, results='asis'}
+for (i in 1:3){
+    cat("<img style=\"float: right;\" src=\"logo.png\">")
+    cat(" \n# Salton Sea Ambient Air and Meteorological Monitoring \n")
+    cat(" \n## Imperial Irrigation District \n")
+    cat(" \nSummary Period: ", format(start_date, "%m-%d-%Y"), " through ", 
+        format(end_date, "%m-%d-%Y"), " \n")
 
-# Salton Sea Ambient Air and Meteorological Monitoring Net
-
-## Imperial Irrigation District
-
-Summary Period: `r format(start_date, "%m-%d-%Y")` through `r format(end_date, 
-"%m-%d-%Y")`
-
-Report Date: `r report_date` 
-<hr>
-
-# Dust Event - `r events$deployment[1]`, `r events$date[1]`
-
-## Description
-
-Comments and notes of event go here.
-
-## Dust Concentration
-```{r timeseries_plot, echo=F}
-print(event_list[[1]]$timeseries)
+    cat(" \nReport Date: ", report_date, " \n") 
+    cat("<hr>")
+}
 ```
 
-## Images
+# Dust Event - `r events$date[1]`
 
+## Sites in Exceedance
+```{r exceed_sites, echo=F, results='asis'}
+pandoc.table(filter(events, date==event_days[1]))
+```
+
+```{r collect_image, echo=F, include=F}
+fl <- tempfile()
+S3_get_object("saltonimages", event_list[[i]]$image.key, filename=fl)
+```
+```{r print_image, echo=F, fig.height=3}
+gridExtra::grid.arrange(event_list[[1]]$timeseries, 
+                        grid::rasterGrob(jpeg::readJPEG(fl), 
+                                         interpolate=TRUE),
+                        ncol=2, nrow=1)
+```
 
 ## PM10 Roses
+```{r roses, echo=F}
+print(event_list[[1]]$map)
+```

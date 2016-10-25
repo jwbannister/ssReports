@@ -1,0 +1,97 @@
+arrangeGrob             package:gridExtra              R Documentation
+
+_A_r_r_a_n_g_e _m_u_l_t_i_p_l_e _g_r_o_b_s _o_n _a _p_a_g_e
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Set up a gtable layout to place multiple grobs on a page.
+
+_U_s_a_g_e:
+
+     arrangeGrob(..., grobs = list(...), layout_matrix, vp = NULL,
+       name = "arrange", as.table = TRUE, respect = FALSE, clip = "off",
+       nrow = NULL, ncol = NULL, widths = NULL, heights = NULL, top = NULL,
+       bottom = NULL, left = NULL, right = NULL, padding = unit(0.5, "line"))
+     
+     grid.arrange(..., newpage = TRUE)
+     
+     marrangeGrob(grobs, ncol, nrow, ..., top = quote(paste("page", g, "of",
+       pages)))
+     
+_A_r_g_u_m_e_n_t_s:
+
+     ...: grobs, gtables, ggplot or trellis objects
+
+   grobs: list of grobs
+
+layout_matrix: optional layout
+
+      vp: viewport
+
+    name: argument of gtable
+
+as.table: logical: bottom-left to top-right (TRUE) or top-left to
+          bottom-right (FALSE)
+
+ respect: argument of gtable
+
+    clip: argument of gtable
+
+    nrow: argument of gtable
+
+    ncol: argument of gtable
+
+  widths: argument of gtable
+
+ heights: argument of gtable
+
+     top: optional string, or grob
+
+  bottom: optional string, or grob
+
+    left: optional string, or grob
+
+   right: optional string, or grob
+
+ padding: unit of length one, margin around annotations
+
+ newpage: open a new page
+
+_D_e_t_a_i_l_s:
+
+     Using marrangeGrob, if the layout specifies both nrow and ncol,
+     the list of grobs can be split into multiple pages. On interactive
+     devices print opens new windows, whilst non-interactive devices
+     such as pdf call grid.newpage() between the drawings.
+
+_V_a_l_u_e:
+
+     arrangeGrob returns a gtable.
+
+     marrangeGrob returns a list of class arrangelist
+
+_F_u_n_c_t_i_o_n_s:
+
+        • ‘arrangeGrob’: return a grob without drawing
+
+        • ‘grid.arrange’: draw on the current device
+
+        • ‘marrangeGrob’: interface to arrangeGrob that can dispatch on
+          multiple pages
+
+_E_x_a_m_p_l_e_s:
+
+     library(grid)
+     grid.arrange(rectGrob(), rectGrob())
+     ## Not run:
+     
+     library(ggplot2)
+     pl <- lapply(1:11, function(.x) qplot(1:10, rnorm(10), main=paste("plot", .x)))
+     ml <- marrangeGrob(pl, nrow=2, ncol=2)
+     ## non-interactive use, multipage pdf
+     ggsave("multipage.pdf", ml)
+     ## interactive use; open new devices
+     ml
+     ## End(Not run)
+     
+
