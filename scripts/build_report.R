@@ -2,7 +2,7 @@ load_all()
 library(lubridate)
 rm(list=ls())
 
-start_date <- mdy("03-01-2016") # date to start reporting period
+start_date <- mdy("11-01-2016") # date to start reporting period
 duration <- 1 # number of months to report 
 end_date <- start_date %m+% months(duration) %m-% days(1)
 report_date <- format(Sys.Date(), "%m-%d-%Y")

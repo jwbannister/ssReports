@@ -12,11 +12,13 @@ query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, t.pm25 ",
 pm_pull <- query_salton(query1)
 pm_df <- pm_pull[complete.cases(pm_pull), ]
 pm_df$datetime <- as.POSIXct(as.character(pm_df$datetime), tz="UTC")
+attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
-query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_10m, m.wd_sonic, ", 
-                 "m.delta_temp_2m, m.delta_temp_10m, m.net_rad, m.rh_2m, ",
-                 "m.at_2m ", 
+query1 <- paste0("SELECT i.deployment, m.datetime, ",
+                 "COALESCE(m.ws_10m, m.ws_sonic_2d) AS ws, ", 
+                 "COALESCE(m.wd_10m, m.wd_sonic) AS wd, ", 
+                 "m.at_2m, m.rh_2m, m.delta_temp_2m, m.delta_temp_10m ", 
                  "FROM met.met_1hour m JOIN info.deployments i ",
                  "ON m.deployment_id = i.deployment_id ", 
                  "WHERE datetime BETWEEN '", start_date, " 01:00:00' ",
@@ -25,10 +27,8 @@ query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_10m, m.wd_sonic, ",
                  "'Torres-Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
 met_pull <- query_salton(query1)
-met_pull$delta_temp_diff <- 
-    met_pull$delta_temp_10m - met_pull$delta_temp_2m
-met_pull <- select(met_pull, -delta_temp_10m, -delta_temp_2m)
 met_df <- met_pull[complete.cases(met_pull), ]
+attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull and summarize flag data
 query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ", 
@@ -66,11 +66,13 @@ loc_df$x <- utmcoord$coords.x1
 loc_df$y <- utmcoord$coords.x2
 
 # pull photo data
-query1 <- paste0("SELECT i.datetime, f.s3_url ", 
-                 "FROM images.images i JOIN images.image_files f ", 
-                 "ON i.image_file_id=f.image_file_id ", 
-                 "WHERE f.image_deployment_id = 2 ", 
-                 "AND i.datetime BETWEEN '", start_date, " 00:00:00' ",
+query1 <- paste0("SELECT i.datetime, d.deployment, f.s3_url ", 
+                 "FROM images.images i ", 
+                 "JOIN images.image_files f ON i.image_file_id=f.image_file_id ", 
+                 "JOIN images.image_deployments id ", 
+                 "ON f.image_deployment_id = id.image_deployment_id ", 
+                 "JOIN info.deployments d ON id.deployment_id=d.deployment_id ",
+                 "WHERE i.datetime BETWEEN '", start_date, " 00:00:00' ",
                  "AND '", end_date %m+% days(1), " 00:00:00' ")
 image_df <- query_salton(query1)
                  
