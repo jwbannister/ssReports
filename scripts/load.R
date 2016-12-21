@@ -66,15 +66,18 @@ loc_df$x <- utmcoord$coords.x1
 loc_df$y <- utmcoord$coords.x2
 
 # pull photo data
-query1 <- paste0("SELECT i.datetime, d.deployment, f.s3_url ", 
+query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_url ", 
                  "FROM images.images i ", 
                  "JOIN images.image_files f ON i.image_file_id=f.image_file_id ", 
                  "JOIN images.image_deployments id ", 
                  "ON f.image_deployment_id = id.image_deployment_id ", 
                  "JOIN info.deployments d ON id.deployment_id=d.deployment_id ",
-                 "WHERE i.datetime BETWEEN '", start_date, " 00:00:00' ",
+                 "WHERE d.deployment != '1004' ", 
+                 "AND i.image_deployment_id != '3' ",
+                 "AND i.datetime BETWEEN '", start_date, " 00:00:00' ",
                  "AND '", end_date %m+% days(1), " 00:00:00' ")
 image_df <- query_salton(query1)
+
                  
 save(pm_df, met_df, flag_df, loc_df, image_df, 
      file="~/code/ssReports/data/load.RData")

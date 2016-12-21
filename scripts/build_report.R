@@ -1,6 +1,6 @@
 load_all()
 library(lubridate)
-rm(list=ls())
+#rm(list=ls())
 
 start_date <- mdy("11-01-2016") # date to start reporting period
 duration <- 1 # number of months to report 

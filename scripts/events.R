@@ -5,9 +5,20 @@ library(lubridate)
 library(ggplot2)
 library(RS3)
 library(RColorBrewer)
+library(gridExtra)
+library(grid)
 
 pm10_cutoff <- 150
 pm25_cutoff <- 35
+
+# categorize sites into zones
+zones <- data.frame(deployment=c("Torres-Martinez", "Salton Sea Park", 
+                                 "Bombay Beach", "Sonny Bono", 
+                                 "Naval Test Base", "Salton City"), 
+                    zone=c("N", "N", "E", "E", "W", "W"), 
+                    camera=c(rep("Torres-Martinez", 2), 
+                             rep("1003", 2), 
+                             rep("Salton City", 2)))
 
 # detect dust events
 met_df$date <- as.Date(substr(met_df$datetime %m-% minutes(30), 1, 10)) 
@@ -33,9 +44,9 @@ for (i in names(event_list)){
         select(deployment, datetime, pm10, pm25)
     met_tmp <- met_df %>% filter(date==i) %>%
         select(deployment, datetime, ws, wd)
-    event_df <- left_join(pm_tmp, met_tmp, by=c("deployment", "datetime"))
-    worst_loc <- filter(event_df, pm10==max(pm10))$deployment
-    worst_df <- event_df %>% filter(deployment==worst_loc)
+    event_df <- left_join(pm_tmp, met_tmp, by=c("deployment", "datetime")) %>%
+        left_join(zones, by="deployment")
+    # build timeseries plot
     timeseries <- event_df %>%
         arrange(deployment, datetime) %>% filter(hour(datetime)!=0) %>%
         gather(pm, conc, pm10:pm25) %>%
@@ -43,57 +54,58 @@ for (i in names(event_list)){
         ggplot(aes(x=hour(datetime), y=conc)) +
         geom_path(aes(color=deployment)) +
         ylab(bquote('PM10 Concentration ('*mu~'g/'*m^3~')')) + xlab("Hour")
-    fl <- tempfile()
-    png(filename=fl, width=8, height=3, units="in", res=300)
+    event_list[[i]]$time_img <- paste0(tempfile(), ".png")
+    png(filename=event_list[[i]]$time_img, width=8, height=2, units="in", 
+        res=300)
     print(timeseries)
     dev.off()
-    time_plot <- png::readPNG(fl)
-    event_list[[i]]$time_grob <- grid::rasterGrob(time_plot, interpolate=TRUE)
-
-    daylight <- filter(worst_df, between(hour(datetime), 7, 16))
-    target.datetime <- daylight[daylight$pm10==max(daylight$pm10), ]$datetime
-    image_tmp <- image_df %>% filter(date(datetime)==date(target.datetime)) %>%
-        mutate(delta = abs(difftime(datetime, target.datetime)))
-    pic.datetime <- filter(image_tmp, delta==min(delta))$datetime
-    image.key <- substring(filter(image_tmp, delta==min(delta))$s3_url, 49)
-    if (length(image.key)==0) image.key <- NA
-    if (!is.na(image.key)){
-    image.file <- tempfile()
-    S3_bucket_access(image.key, image.file)
-    img <- jpeg::readJPEG(image.file)
-    image.grob <- grid::rasterGrob(img, interpolate=T)
-    event_list[[i]]$image.plot <- ggplot(data.frame(x=1:10, y=1:10), 
-                                         aes(x=x, y=y)) +
-                                  geom_blank() +
-                                  annotation_custom(image.grob, 
-                                                    xmin=-Inf, xmax=Inf, 
-                                                    ymin=-Inf, ymax=Inf) +
-                                  ggtitle(paste0("Salton City Camera 1\n", 
-                                                 pic.datetime)) +
-                                  theme(panel.background=element_blank(), 
-                                        axis.title=element_blank(), 
-                                        axis.text=element_blank(), 
-                                        axis.ticks=element_blank())
-    } else{
-        event_list[[i]]$image.plot <- ggplot(data.frame(x=1:10, y=1:10), 
-                                             aes(x=x, y=y)) +
-                                  geom_text(aes(x=3, y=5, 
-                                                label="No Image Available")) +
-                                  theme(panel.background=element_blank(), 
-                                        axis.title=element_blank(), 
-                                        axis.text=element_blank(), 
-                                        axis.ticks=element_blank())
+    # build event photos
+    event_list[[i]]$photos <- vector(mode="list", length=3)
+    names(event_list[[i]]$photos) <- c("N", "E", "W")
+    daylight <- filter(event_df, between(hour(datetime), 7, 16))
+    tmp_zone <- select(zones, -deployment)[!duplicated(select(zones, -deployment)), ]
+    zone_names <- c("N"="North", "E"="East", "W"="West")
+    for (j in c("N", "E", "W")){
+        tmp_day <- filter(daylight, zone==j)
+        target.datetime <- tmp_day[tmp_day$pm10==max(tmp_day$pm10), ]$datetime
+        image_tmp <- image_df %>% 
+            left_join(tmp_zone, by=c("deployment"="camera")) %>%
+            filter(date(datetime)==date(target.datetime) & zone==j) %>%
+            mutate(delta = abs(difftime(datetime, target.datetime)))
+        pic.datetime <- filter(image_tmp, delta==min(delta))$datetime
+        image.key <- substring(filter(image_tmp, delta==min(delta))$s3_url, 49)
+        if (length(image.key)!=0){
+            image.file <- tempfile()
+            S3_bucket_access(image.key, image.file)
+            img <- jpeg::readJPEG(image.file)
+            image.grob <- grid::rasterGrob(img, interpolate=T)
+        } else{
+            p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
+                  geom_text(aes(x=3, y=5, label="No Image Available")) + 
+                  theme(panel.background=element_blank(), 
+                        axis.title=element_blank(), 
+                        axis.text=element_blank(), 
+                        axis.ticks=element_blank())
+            image.grob <- ggplotGrob(p1)
+        }
+        event_list[[i]]$photos[[j]] <- image.grob
     }
-    combo.plot <- gridExtra::arrangeGrob(event_list[[i]]$timeseries, 
-                                         event_list[[i]]$image.plot, ncol=2)
-    combo.file <- paste0(tempfile(), ".jpg")
-    ggsave(combo.file, combo.plot, height=3, width=6.75, units="in")
-    event_list[[i]]$combo.grob <- 
-        grid::rasterGrob(jpeg::readJPEG(combo.file), interpolate=T)
+    event_list[[i]]$photo_img <- paste0(tempfile(), ".png")
+    png(filename=event_list[[i]]$photo_img, width=8, height=1.9, units="in", 
+        res=300)
+        grid.arrange(grobs=list(event_list[[i]]$photos$W, 
+                               event_list[[i]]$photos$E, 
+                               event_list[[i]]$photos$N), ncol=3)
+    dev.off()
+    # build dustrose map
     event_list[[i]]$map <- event_plot(loc_df, 
                                       event_df[complete.cases(event_df), ], 
                                       background)
+    event_list[[i]]$map_img <- paste0(tempfile(), ".png")
+    png(filename=event_list[[i]]$map_img, width=8, height=3, units="in", 
+        res=300)
+    print(event_list[[i]]$map)
+    dev.off()
 }
-
 names(events) <- c("Deployment", "Date", "24-hour PM10 Avg.", 
                    "24-hour PM2.5 Avg.")

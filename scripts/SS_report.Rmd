@@ -34,7 +34,7 @@ source("~/code/ssReports/scripts/events.R")
 
 ```{r met_table, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
-cat("\n## Data Summary - Meteorological Data\n") 
+cat("## Data Summary - Meteorological Data\n") 
 row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")
 col_names <- c("10m Wind Speed\n(m/s)", "Ambient Temp.\n(degC)", 
                "Relative Humidity\n(%)", "Delta Temp. 2m\n(degC)", 
@@ -48,7 +48,7 @@ for (i in 1:length(met_summary)){
                  split.table=Inf)
     cat("</body>")
 }
-cat("<p style=\"page-break-after:always;\"></p> \n")
+#cat("<p style=\"page-break-after:always;\"></p> \n")
 ```
 
 ```{r teom_table, echo=F, results='asis'}
@@ -83,9 +83,13 @@ for (i in 1:length(event_list)){
                " \n"))
     cat(" \n## Sites in Exceedance \n")
     pandoc.table(filter(events, Date==names(event_list)[i]))
-    gridExtra::grid.arrange(event_list[[i]]$time_grob)
-    cat(" \n \n \n")
+    cat(paste0("<p>![](", event_list[[i]]$time_img, ")</p>"))
+    cat("<hr class=\"style2\">")
+    cat(paste0("<p>![](", event_list[[i]]$photo_img, ")</p>"))
+    cat("<hr class=\"style2\">")
+    cat("<center>")
     print(event_list[[i]]$map)
+    cat("</center>")
     cat("<p style=\"page-break-after:always;\"></p> \n")
 }
 ```
