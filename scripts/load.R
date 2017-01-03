@@ -4,13 +4,15 @@ library(lubridate)
 library(rgdal)
 
 # pull TEOM data
-query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, t.pm25 ", 
+query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, t.pm25, ", 
+                 "t.teom_bp, t.teom_at, t.teom_rh ",
                  "FROM teom.pm_1hour t JOIN info.deployments i ",
                  "ON t.deployment_id = i.deployment_id ", 
                  "WHERE datetime BETWEEN '", start_date, " 01:00:00' ",
                  "AND '", end_date %m+% days(1), " 00:00:00'")
 pm_pull <- query_salton(query1)
-pm_df <- pm_pull[complete.cases(pm_pull), ]
+pm_df <- pm_pull[complete.cases(pm_pull[ , 3:4]), ]
+pm_df[is.na(pm_df)] <- -999
 pm_df$datetime <- as.POSIXct(as.character(pm_df$datetime), tz="UTC")
 attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
@@ -78,6 +80,19 @@ query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_u
                  "AND '", end_date %m+% days(1), " 00:00:00' ")
 image_df <- query_salton(query1)
 
+# pull 5 minute wind data
+query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_2m AS ws ", 
+                 "FROM met.met_5min m JOIN info.deployments i ",
+                 "ON m.deployment_id = i.deployment_id ", 
+                 "WHERE datetime BETWEEN '", start_date, " 01:00:00' ",
+                 "AND '", end_date %m+% days(1), " 00:00:00' ",
+                 "AND i.deployment IN ('1001', '1003', '1102')")
+met_5min_pull <- query_salton(query1)
+zns <- data.frame(deployment=c("1001", "1102", "1003"), 
+                  zone=c("N", "W", "E"))
+met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
+    left_join(zns, by="deployment")
+attributes(met_5min_df$datetime)$tzone <- "America/Los_Angeles"
                  
-save(pm_df, met_df, flag_df, loc_df, image_df, 
+save(pm_df, met_df, flag_df, loc_df, image_df, met_5min_df, 
      file="~/code/ssReports/data/load.RData")

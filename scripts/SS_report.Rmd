@@ -34,41 +34,45 @@ source("~/code/ssReports/scripts/events.R")
 
 ```{r met_table, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
-cat("## Data Summary - Meteorological Data\n") 
+cat("## Data Summary - Meteorological Stations\n<br>") 
 row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")
-col_names <- c("10m Wind Speed\n(m/s)", "Ambient Temp.\n(degC)", 
-               "Relative Humidity\n(%)", "Delta Temp. 2m\n(degC)", 
-               "Delta Temp. 10m\n(degC)")
+col_names <- c("10m Wind Speed\n(m/s)", "Ambient Temp.\n(<sup>o</sup>C)", 
+               "Relative Humidity\n(%)", "Delta Temp. 2m\n(<sup>o</sup>C)", 
+               "Delta Temp. 10m\n(<sup>o</sup>C)")
 for (i in 1:length(met_summary)){
     rownames(met_summary[[i]]) <- row_names
     colnames(met_summary[[i]]) <- col_names
     met_summary[[i]][1, ] <- paste0(as.numeric(met_summary[[i]][1 , ])*100, "%")
     cat("<body>")
-    pandoc.table(met_summary[[i]], caption=names(met_summary)[i],
+    pandoc.table(met_summary[[i]], 
+                 caption=cat(paste0("<h4> ", names(met_summary)[i], " </h4>")), 
                  split.table=Inf)
     cat("</body>")
 }
-#cat("<p style=\"page-break-after:always;\"></p> \n")
+cat("<p style=\"page-break-after:always;\"></p> \n")
 ```
 
 ```{r teom_table, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
-cat("\n## Data Summary - Particulate Concentration\n")
-pandoc.table(pm10_tbl, caption="PM10", split.table=Inf)
-pandoc.table(pm25_tbl, caption="PM2.5", split.table=Inf)
+cat("\n## Data Summary - TEOM Stations\n<br>")
+for (i in names(teom_summary)){
+    cat("<body>")
+    pandoc.table(teom_summary[[i]], caption=cat("<h4>", i, "</h4>"), split.table=Inf)
+    cat("</body>")
+}
 cat("<p style=\"page-break-after:always;\"></p> \n")
 ```
 
 ```{r flags_events, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
-cat("\n## Data Review -  Flagged Data\n")
+cat("\n## Data Review -  Flagged Data\n<br>")
 cat("\n(Total invalid hours during summary period)\n")
 
 cat("<body>")
 pandoc.table(invalid_spread, split.table=Inf)
 cat("</body>")
 
-cat("\n## Site Exceedance Days\n")
+cat("\n## Site Exceedance Days\n<br>")
 cat("<body>")
 pandoc.table(events)
 cat("</body>")

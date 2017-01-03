@@ -23,7 +23,8 @@ zones <- data.frame(deployment=c("Torres-Martinez", "Salton Sea Park",
 # detect dust events
 met_df$date <- as.Date(substr(met_df$datetime %m-% minutes(30), 1, 10)) 
 pm_df$date <- as.Date(substr(pm_df$datetime %m-% minutes(30), 1, 10))
-pm_summary <- pm_df %>% group_by(deployment, date) %>%
+pm_summary <- pm_df %>% select(-teom_bp, -teom_at, -teom_rh) %>% 
+    group_by(deployment, date) %>%
     summarize(daily.pm10.avg = round(sum(pm10)/24, 1), 
               daily.pm25.avg = round(sum(pm25)/24, 1))
 events <- pm_summary %>% ungroup() %>%
@@ -62,15 +63,20 @@ for (i in names(event_list)){
     # build event photos
     event_list[[i]]$photos <- vector(mode="list", length=3)
     names(event_list[[i]]$photos) <- c("N", "E", "W")
-    daylight <- filter(event_df, between(hour(datetime), 7, 16))
+    daylight_pm <- filter(event_df, between(hour(datetime), 7, 16))
+    daylight_wind <- filter(met_5min_df, between(hour(datetime), 6, 15)) %>%
+        filter(date(datetime)==i)
     tmp_zone <- select(zones, -deployment)[!duplicated(select(zones, -deployment)), ]
     zone_names <- c("N"="North", "E"="East", "W"="West")
     for (j in c("N", "E", "W")){
-        tmp_day <- filter(daylight, zone==j)
-        target.datetime <- tmp_day[tmp_day$pm10==max(tmp_day$pm10), ]$datetime
+        tmp_pm <- filter(daylight_pm, zone==j)
+        worst_hour <- hour(tmp_pm[tmp_pm$pm10==max(tmp_pm$pm10), ]$datetime) - 1
+        tmp_wind <- filter(daylight_wind, zone==j, hour(datetime)==worst_hour)
+        target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime
         image_tmp <- image_df %>% 
             left_join(tmp_zone, by=c("deployment"="camera")) %>%
             filter(date(datetime)==date(target.datetime) & zone==j) %>%
+            filter(hour(datetime)==worst_hour) %>%
             mutate(delta = abs(difftime(datetime, target.datetime)))
         pic.datetime <- filter(image_tmp, delta==min(delta))$datetime
         image.key <- substring(filter(image_tmp, delta==min(delta))$s3_url, 49)
