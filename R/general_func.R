@@ -15,3 +15,13 @@ report_header <- function(start_date, end_date, report_date){
     cat(" \nReport Date: ", report_date, " \n") 
     cat("<hr class=\"style1\">")
 }
+
+tag_value <- function(val, css_tag, threshold){
+    tagged_txt <- ifelse(val>threshold, 
+                         paste0("<", css_tag, ">", val, "</", css_tag, ">"), 
+                         as.character(val))
+    tagged_txt
+}
+
+    
+    

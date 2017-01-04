@@ -57,7 +57,8 @@ report_header(start_date, end_date, report_date)
 cat("\n## Data Summary - TEOM Stations\n<br>")
 for (i in names(teom_summary)){
     cat("<body>")
-    pandoc.table(teom_summary[[i]], caption=cat("<h4>", i, "</h4>"), split.table=Inf)
+    pandoc.table(teom_summary[[i]], caption=cat("<h4>", i, "</h4>"), 
+                 split.table=Inf)
     cat("</body>")
 }
 cat("<p style=\"page-break-after:always;\"></p> \n")
@@ -65,14 +66,16 @@ cat("<p style=\"page-break-after:always;\"></p> \n")
 
 ```{r flags_events, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
-cat("\n## Data Review -  Flagged Data\n<br>")
-cat("\n(Total invalid hours during summary period)\n")
-
+cat("\n## Data Review -  Flagged Data\n")
+cat("\n##### (Total invalid hours during summary period)\n<br>")
 cat("<body>")
 pandoc.table(invalid_spread, split.table=Inf)
 cat("</body>")
 
-cat("\n## Site Exceedance Days\n<br>")
+cat("\n## Site Exceedance Days\n")
+cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
+events[[3]] <- tag_value(events[[3]], "a", 150)
+events[[4]] <- tag_value(events[[4]], "a", 35)
 cat("<body>")
 pandoc.table(events)
 cat("</body>")
@@ -86,7 +89,10 @@ for (i in 1:length(event_list)){
                format(as.Date(names(event_list[i])), "%m-%d-%Y"), 
                " \n"))
     cat(" \n## Sites in Exceedance \n")
+    cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
+    cat("<body>")
     pandoc.table(filter(events, Date==names(event_list)[i]))
+    cat("</body>")
     cat(paste0("<p>![](", event_list[[i]]$time_img, ")</p>"))
     cat("<hr class=\"style2\">")
     cat(paste0("<p>![](", event_list[[i]]$photo_img, ")</p>"))
