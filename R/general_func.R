@@ -9,10 +9,10 @@ report_header <- function(start_date, end_date, report_date){
     cat("<img style=\"float: right;\" src=\"/home/john/code/ssReports/data/logo.png\"> \n")
     cat(" \n# ", as.character(month(start_date, label=T, abbr=F)), " ", 
         year(start_date), " Monitoring Summary \n")
-    cat(" \n## IID Air Quality \n")
-    cat(" \nSummary Period: ", format(start_date, "%m-%d-%Y"), " through ", 
+    cat(" \n## IID Air Quality Program\n")
+    cat(" \n##### Summary Period: ", format(start_date, "%m-%d-%Y"), " through ", 
         format(end_date, "%m-%d-%Y"), " \n")
-    cat(" \nReport Date: ", report_date, " \n") 
+    cat(" \n##### Report Date: ", report_date, " \n") 
     cat("<hr class=\"style1\">")
 }
 

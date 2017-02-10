@@ -5,26 +5,51 @@ library(rgdal)
 
 # pull TEOM data
 query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, t.pm25, ", 
-                 "t.teom_bp, t.teom_at, t.teom_rh ",
+                 "t.teom_bp, t.teom_at, t.teom_rh, ",
+                 "flags.is_invalid(t.deployment_id, 144, t.datetime) ", 
+                 "AS invalid_pm10, ",
+                 "flags.is_invalid(t.deployment_id, 146, t.datetime) ", 
+                 "AS invalid_pm25, ",
+                 "flags.is_invalid(t.deployment_id, 320, t.datetime) ", 
+                 "AS invalid_bp, ",
+                 "flags.is_invalid(t.deployment_id, 150, t.datetime) ", 
+                 "AS invalid_at, ",
+                 "flags.is_invalid(t.deployment_id, 151, t.datetime) ", 
+                 "AS invalid_rh ",
                  "FROM teom.pm_1hour t JOIN info.deployments i ",
                  "ON t.deployment_id = i.deployment_id ", 
-                 "WHERE datetime BETWEEN '", start_date, " 01:00:00' ",
-                 "AND '", end_date %m+% days(1), " 00:00:00'")
+                 "WHERE (datetime - '1 second'::interval)::date ",
+                 "BETWEEN '", start_date, "'::date ",
+                 "AND '", end_date, "'::date;")
 pm_pull <- query_salton(query1)
 pm_df <- pm_pull[complete.cases(pm_pull[ , 3:4]), ]
-pm_df[is.na(pm_df)] <- -999
 pm_df$datetime <- as.POSIXct(as.character(pm_df$datetime), tz="UTC")
 attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
 query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "COALESCE(m.ws_10m, m.ws_sonic_2d) AS ws, ", 
-                 "COALESCE(m.wd_10m, m.wd_sonic) AS wd, ", 
-                 "m.at_2m, m.rh_2m, m.delta_temp_2m, m.delta_temp_10m ", 
+                 "COALESCE(m.wd_10m, m.wd_sonic) AS wd, m.net_rad, ", 
+                 "m.at_2m, m.rh_2m, m.delta_temp_2m, m.delta_temp_10m, ", 
+                 "flags.is_invalid(m.deployment_id, 114, m.datetime) ", 
+                 "AS invalid_ws, ",
+                 "flags.is_invalid(m.deployment_id, 298, m.datetime) ", 
+                 "AS invalid_wd, ",
+                 "flags.is_invalid(m.deployment_id, 118, m.datetime) ", 
+                 "AS invalid_rad, ",
+                 "flags.is_invalid(m.deployment_id, 119, m.datetime) ", 
+                 "AS invalid_at, ",
+                 "flags.is_invalid(m.deployment_id, 120, m.datetime) ", 
+                 "AS invalid_rh, ",
+                 "flags.is_invalid(m.deployment_id, 115, m.datetime) ", 
+                 "AS invalid_d2, ",
+                 "flags.is_invalid(m.deployment_id, 116, m.datetime) ", 
+                 "AS invalid_d10 ",
                  "FROM met.met_1hour m JOIN info.deployments i ",
                  "ON m.deployment_id = i.deployment_id ", 
-                 "WHERE datetime BETWEEN '", start_date, " 01:00:00' ",
-                 "AND '", end_date %m+% days(1), " 00:00:00' ",
+                 "WHERE (datetime - '1 second'::interval)::date ",
+                 "BETWEEN '", start_date, "'::date ",
+                 "AND '", end_date, "'::date ",
                  "AND i.deployment IN ('Bombay Beach', 'Sonny Bono', ", 
                  "'Torres-Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
@@ -76,19 +101,21 @@ query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_u
                  "JOIN info.deployments d ON id.deployment_id=d.deployment_id ",
                  "WHERE d.deployment != '1004' ", 
                  "AND i.image_deployment_id != '3' ",
-                 "AND i.datetime BETWEEN '", start_date, " 00:00:00' ",
-                 "AND '", end_date %m+% days(1), " 00:00:00' ")
+                 "AND (datetime - '1 second'::interval)::date ",
+                 "BETWEEN '", start_date, "'::date ",
+                 "AND '", end_date, "'::date;")
 image_df <- query_salton(query1)
 
 # pull 5 minute wind data
 query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_2m AS ws ", 
                  "FROM met.met_5min m JOIN info.deployments i ",
                  "ON m.deployment_id = i.deployment_id ", 
-                 "WHERE datetime BETWEEN '", start_date, " 01:00:00' ",
-                 "AND '", end_date %m+% days(1), " 00:00:00' ",
-                 "AND i.deployment IN ('1001', '1003', '1102')")
+                 "WHERE (datetime - '1 second'::interval)::date ",
+                 "BETWEEN '", start_date, "'::date ",
+                 "AND '", end_date, "'::date ",
+                 "AND i.deployment IN ('1001', '1004', '1102')")
 met_5min_pull <- query_salton(query1)
-zns <- data.frame(deployment=c("1001", "1102", "1003"), 
+zns <- data.frame(deployment=c("1001", "1102", "1004"), 
                   zone=c("N", "W", "E"))
 met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
     left_join(zns, by="deployment")

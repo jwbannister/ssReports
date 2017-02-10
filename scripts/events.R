@@ -34,9 +34,9 @@ arrange(date)
 event_days <- unique(events$date)
 
 # get background for use in dust rose plot
-basemap <- ggmap::get_map(location=c(lon=-115.8434, lat=33.3286), color="color", 
-                          source="google", maptype="satellite", zoom=10)
-background <- ggmap::ggmap(basemap, extent="device")
+background <- plot_salton_background()
+# set coordinates for determining daylight hours
+salton_sea <- matrix(c(-115.8434, 33.3286), nrow=1) 
 
 event_list <- vector(mode="list", length=length(event_days))
 names(event_list) <- event_days
@@ -54,7 +54,9 @@ for (i in names(event_list)){
         filter(pm=="pm10") %>%
         ggplot(aes(x=hour(datetime), y=conc)) +
         geom_path(aes(color=deployment)) +
-        ylab(bquote('PM10 Concentration ('*mu~'g/'*m^3~')')) + xlab("Hour")
+        scale_color_brewer(palette="Set1") +
+        ylab(bquote('PM10 Conc. ('*mu~'g/'*m^3~')')) + xlab("Hour") +
+        theme(legend.title=element_blank())
     event_list[[i]]$time_img <- paste0(tempfile(), ".png")
     png(filename=event_list[[i]]$time_img, width=8, height=2, units="in", 
         res=300)
@@ -63,8 +65,13 @@ for (i in names(event_list)){
     # build event photos
     event_list[[i]]$photos <- vector(mode="list", length=3)
     names(event_list[[i]]$photos) <- c("N", "E", "W")
-    daylight_pm <- filter(event_df, between(hour(datetime), 7, 16))
-    daylight_wind <- filter(met_5min_df, between(hour(datetime), 6, 15)) %>%
+    dt <- as.POSIXct(i, tz="America/Los_Angeles")
+    sunrise <- maptools::sunriset(salton_sea, dt, direction="sunrise", 
+                                  POSIXct.out=T)$time
+    sunset <- maptools::sunriset(salton_sea, dt, direction="sunset", 
+                                 POSIXct.out=T)$time
+    daylight_pm <- filter(event_df, between(datetime, sunrise, sunset))
+    daylight_wind <- filter(met_5min_df, between(datetime, sunrise, sunset)) %>%
         filter(date(datetime)==i)
     tmp_zone <- select(zones, -deployment)[!duplicated(select(zones, -deployment)), ]
     zone_names <- c("N"="North", "E"="East", "W"="West")
@@ -84,14 +91,30 @@ for (i in names(event_list)){
             image.file <- tempfile()
             S3_bucket_access(image.key, image.file)
             img <- jpeg::readJPEG(image.file)
-            image.grob <- grid::rasterGrob(img, interpolate=T)
-        } else{
+            prelim.grob <- grid::rasterGrob(img, interpolate=T)
             p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
-                  geom_text(aes(x=3, y=5, label="No Image Available")) + 
                   theme(panel.background=element_blank(), 
                         axis.title=element_blank(), 
                         axis.text=element_blank(), 
-                        axis.ticks=element_blank())
+                        axis.ticks=element_blank(),
+                        legend.position="none", 
+                        plot.title = element_text(hjust=0.5)) +
+                  annotation_custom(prelim.grob, xmin=-Inf, xmax=Inf, 
+                                    ymin=-Inf, ymax=Inf) +
+                  ggtitle(zone_names[[j]])
+            image.grob <- ggplotGrob(p1)
+        } else{
+            p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
+                  geom_blank() +
+                  geom_text(aes(x=5, y=5, label="No Image Available", 
+                                hjust="center")) + 
+                  ggtitle(zone_names[[j]]) + 
+                  theme(panel.background=element_blank(), 
+                        axis.title=element_blank(), 
+                        axis.text=element_blank(), 
+                        axis.ticks=element_blank(), 
+                        legend.position="none", 
+                        plot.title = element_text(hjust=0.5)) 
             image.grob <- ggplotGrob(p1)
         }
         event_list[[i]]$photos[[j]] <- image.grob
@@ -113,5 +136,6 @@ for (i in names(event_list)){
     print(event_list[[i]]$map)
     dev.off()
 }
-names(events) <- c("Deployment", "Date", "24-hour PM10 Avg.", 
-                   "24-hour PM2.5 Avg.")
+names(events) <- c("Deployment", "Date", 
+                   "24-hour PM<sub>10</sub> Avg.\\\n(micrograms/m<sup>3</sup>)", 
+                   "24-hour PM<sub>2.5</sub> Avg.\\\n(micrograms/m<sup>3</sup>)")
