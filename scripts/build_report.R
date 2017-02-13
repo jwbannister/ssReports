@@ -17,3 +17,8 @@ rmarkdown::render(paste0("scripts/SS_report.Rmd"),
 # convert HTML to PDF 
 convert_command <- paste0("wkhtmltopdf ", file_name, ".html ", file_name, ".pdf")
 system(convert_command)
+
+# save workspace if needed for debugging
+img_fl <- paste0("/tmp/SS_report_image.RData")
+save.image(file=img_fl)
+print(img_fl)

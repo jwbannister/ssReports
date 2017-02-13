@@ -68,7 +68,7 @@ cat("<p style=\"page-break-after:always;\"></p> \n")
 ```{r flags_events, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
 cat("\n## Data Review -  Flagged Data\n")
-cat("\n##### (Total invalid hours during summary period)\n<br>")
+cat("\n##### (Flagged invalid hours, particulate monitoring)\n<br>")
 cat("<p style=\"font-size: 8pt;\">")
 pandoc.table(invalid_spread, split.table=Inf)
 cat("</p>")
@@ -84,9 +84,11 @@ cat(" \n\n## Comments \n")
 cat("<p style=\"font-size: 10pt;\">")
 comment_file <- paste0("~/code/ssReports/data/comments_", month(start_date), 
                        year(start_date), ".txt")
-if (file.exists(comment_file)){
-    cat(" \n ", readLines(comment_file), " \n")
-}
+    if (file.exists(comment_file)){
+        for (i in 1:length(readLines(comment_file))){
+            cat(" \n ", readLines(comment_file)[i], " \n")
+        }
+    }
 cat("</p>")
 cat("<p style=\"page-break-after:always;\"></p> \n")
 ```

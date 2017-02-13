@@ -137,5 +137,5 @@ for (i in names(event_list)){
     dev.off()
 }
 names(events) <- c("Deployment", "Date", 
-                   "24-hour PM<sub>10</sub> Avg.\\\n(micrograms/m<sup>3</sup>)", 
-                   "24-hour PM<sub>2.5</sub> Avg.\\\n(micrograms/m<sup>3</sup>)")
+                   "24-hour PM<sub>10</sub> Avg. (micrograms/m<sup>3</sup>)", 
+                   "24-hour PM<sub>2.5</sub> Avg. (micrograms/m<sup>3</sup>)")
