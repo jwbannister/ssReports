@@ -81,15 +81,15 @@ cat("<p style=\"font-size: 10pt;\">")
 pandoc.table(events, split.table=Inf)
 cat("</p>")
 cat(" \n\n## Comments \n")
-cat("<p style=\"font-size: 10pt;\">")
+#cat("<div style=\"font-size: 10pt;\">")
 comment_file <- paste0("~/code/ssReports/data/comments_", month(start_date), 
                        year(start_date), ".txt")
     if (file.exists(comment_file)){
         for (i in 1:length(readLines(comment_file))){
-            cat(" \n ", readLines(comment_file)[i], " \n")
+            cat(" \n", readLines(comment_file)[i], " \n", sep="")
         }
     }
-cat("</p>")
+#cat("</div>")
 cat("<p style=\"page-break-after:always;\"></p> \n")
 ```
 

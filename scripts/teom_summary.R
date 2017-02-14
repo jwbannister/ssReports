@@ -10,8 +10,8 @@ for (j in 1:nrow(pm_df)){
 pm_clean <- pm_clean[ , 1:7]
 
 teom_summary <- vector(mode="list", length=5)
-names(teom_summary) <- c("PM<sub>10</sub> (micrograms/m<sup>3</sup>)", 
-                         "PM<sub>2.5</sub> (micrograms/m<sup>3</sup>)", 
+names(teom_summary) <- c("PM<sub>10</sub> (ug/m<sup>3</sup>)", 
+                         "PM<sub>2.5</sub> (ug/m<sup>3</sup>)", 
                          "Pressure (atm)", "Temperature (<sup>o</sup>C)", 
                          "Relative Humidity (%)")
 row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")

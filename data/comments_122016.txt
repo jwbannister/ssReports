@@ -1,2 +1,0 @@
-Comments are read from text files saved in R package structure, file names 
-specific to month and year (i.e. "comments_122016.txt").

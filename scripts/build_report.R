@@ -8,14 +8,18 @@ if (is.na(mdy(args[1]))){
 start_date <- mdy(args[1]) # date to start reporting period
 end_date <- start_date %m+% months(1) %m-% days(1)
 report_date <- format(Sys.Date(), "%m-%d-%Y")
-file_name <- paste0("~/code/ssReports/output/SS_report_", 
-                    month(start_date, label=TRUE), year(start_date))
+file_name <- paste0("SS_report_", month(start_date, label=TRUE), 
+                    year(start_date))
 
 # render HTML file from markdown document
 rmarkdown::render(paste0("scripts/SS_report.Rmd"), 
-                  output_file=paste0(file_name, ".html"))
+                  output_file=paste0("~/code/ssReports/output/", 
+                                     file_name, ".html"))
 # convert HTML to PDF 
-convert_command <- paste0("wkhtmltopdf ", file_name, ".html ", file_name, ".pdf")
+convert_command <- paste0("wkhtmltopdf ", "~/code/ssReports/output/", 
+                          file_name, ".html ", 
+                          "~/dropbox/salton/'Salton Sea Field Operations'/", 
+                          "0_Level2/'Monthly Reports'/", file_name, ".pdf")
 system(convert_command)
 
 # save workspace if needed for debugging

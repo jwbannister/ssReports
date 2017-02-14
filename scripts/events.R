@@ -47,18 +47,24 @@ for (i in names(event_list)){
         select(deployment, datetime, ws, wd)
     event_df <- left_join(pm_tmp, met_tmp, by=c("deployment", "datetime")) %>%
         left_join(zones, by="deployment")
+    a <- select(event_df, deployment, datetime, value=pm10) %>% 
+        mutate(factor="PM10 (ug/m^3)")
+    b <- select(event_df, deployment, datetime, value=ws) %>% 
+        mutate(factor="Wind Speed (m/s)")
+    plot_df <- rbind(a, b)
     # build timeseries plot
-    timeseries <- event_df %>%
-        arrange(deployment, datetime) %>% filter(hour(datetime)!=0) %>%
-        gather(pm, conc, pm10:pm25) %>%
-        filter(pm=="pm10") %>%
-        ggplot(aes(x=hour(datetime), y=conc)) +
+    timeseries <- plot_df %>%
+        arrange(deployment, datetime) %>% 
+        ggplot(aes(x=datetime, y=value)) +
         geom_path(aes(color=deployment)) +
+        facet_grid(factor ~ ., scales="free_y") +
         scale_color_brewer(palette="Set1") +
-        ylab(bquote('PM10 Conc. ('*mu~'g/'*m^3~')')) + xlab("Hour") +
-        theme(legend.title=element_blank())
+        ylab("") + xlab("") +
+        theme(legend.title=element_blank(), 
+              panel.grid.minor=element_blank(), 
+              strip.text=element_text(size=4))
     event_list[[i]]$time_img <- paste0(tempfile(), ".png")
-    png(filename=event_list[[i]]$time_img, width=8, height=2, units="in", 
+    png(filename=event_list[[i]]$time_img, width=8, height=2.5, units="in", 
         res=300)
     print(timeseries)
     dev.off()
@@ -137,5 +143,5 @@ for (i in names(event_list)){
     dev.off()
 }
 names(events) <- c("Deployment", "Date", 
-                   "24-hour PM<sub>10</sub> Avg. (micrograms/m<sup>3</sup>)", 
-                   "24-hour PM<sub>2.5</sub> Avg. (micrograms/m<sup>3</sup>)")
+                   "24-hour PM<sub>10</sub> Avg. (ug/m<sup>3</sup>)", 
+                   "24-hour PM<sub>2.5</sub> Avg. (ug/m<sup>3</sup>)")
