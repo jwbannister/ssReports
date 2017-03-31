@@ -82,7 +82,9 @@ pandoc.table(events, split.table=Inf)
 cat("</p>")
 cat(" \n\n## Comments \n")
 #cat("<div style=\"font-size: 10pt;\">")
-comment_file <- paste0("~/code/ssReports/data/comments_", month(start_date), 
+comment_dir <- paste0("~/dropbox/salton/Salton Sea Field Operations/", 
+                      "0_Level2/Monthly Reports/")
+comment_file <- paste0(comment_dir, "comments_", month(start_date), 
                        year(start_date), ".txt")
     if (file.exists(comment_file)){
         for (i in 1:length(readLines(comment_file))){

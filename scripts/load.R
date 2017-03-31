@@ -61,7 +61,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date ",
                  "AND i.deployment IN ('Bombay Beach', 'Sonny Bono', ", 
-                 "'Torres-Martinez', 'Naval Test Base', ",
+                 "'Torres Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
 met_df <- query_salton(query1)
 attributes(met_df$datetime)$tzone <- "America/Los_Angeles"

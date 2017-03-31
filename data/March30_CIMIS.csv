@@ -1,0 +1,241 @@
+deployment,date,hour,ws,wd
+Calipatria/Mulberry,3/30/2017,1,1.4,129
+Calipatria/Mulberry,3/30/2017,2,1.4,121
+Calipatria/Mulberry,3/30/2017,3,1.5,125
+Calipatria/Mulberry,3/30/2017,4,1.5,134
+Calipatria/Mulberry,3/30/2017,5,1.4,134
+Calipatria/Mulberry,3/30/2017,6,1.8,142
+Calipatria/Mulberry,3/30/2017,7,1.5,151
+Calipatria/Mulberry,3/30/2017,8,3.2,160
+Calipatria/Mulberry,3/30/2017,9,3.4,171
+Calipatria/Mulberry,3/30/2017,10,2.5,203
+Calipatria/Mulberry,3/30/2017,11,3.4,169
+Calipatria/Mulberry,3/30/2017,12,2.6,212
+Calipatria/Mulberry,3/30/2017,13,3.4,256
+Calipatria/Mulberry,3/30/2017,14,4.9,264
+Calipatria/Mulberry,3/30/2017,15,6.7,232
+Calipatria/Mulberry,3/30/2017,16,7,275
+Calipatria/Mulberry,3/30/2017,17,8.6,302
+Calipatria/Mulberry,3/30/2017,18,6.2,304
+Calipatria/Mulberry,3/30/2017,19,9.8,308
+Calipatria/Mulberry,3/30/2017,20,8.2,304
+Calipatria/Mulberry,3/30/2017,21,8.1,307
+Calipatria/Mulberry,3/30/2017,22,6.5,304
+Calipatria/Mulberry,3/30/2017,23,6.7,306
+Calipatria/Mulberry,3/30/2017,24,6.9,316
+Seeley,3/30/2017,1,1.7,242
+Seeley,3/30/2017,2,1.5,249
+Seeley,3/30/2017,3,1.5,231
+Seeley,3/30/2017,4,2.1,229
+Seeley,3/30/2017,5,1.5,228
+Seeley,3/30/2017,6,1.3,138
+Seeley,3/30/2017,7,1.1,196
+Seeley,3/30/2017,8,2.2,228
+Seeley,3/30/2017,9,5.3,270
+Seeley,3/30/2017,10,5.9,269
+Seeley,3/30/2017,11,4.9,262
+Seeley,3/30/2017,12,4.7,255
+Seeley,3/30/2017,13,9.4,257
+Seeley,3/30/2017,14,8.5,243
+Seeley,3/30/2017,15,9.7,246
+Seeley,3/30/2017,16,10.6,245
+Seeley,3/30/2017,17,6.3,248
+Seeley,3/30/2017,18,7,266
+Seeley,3/30/2017,19,8.6,276
+Seeley,3/30/2017,20,7.6,272
+Seeley,3/30/2017,21,7.2,268
+Seeley,3/30/2017,22,6.9,262
+Seeley,3/30/2017,23,3.3,276
+Seeley,3/30/2017,24,4.3,280
+Meloland,3/30/2017,1,1.3,156
+Meloland,3/30/2017,2,1.3,153
+Meloland,3/30/2017,3,2,159
+Meloland,3/30/2017,4,2.6,156
+Meloland,3/30/2017,5,1.8,151
+Meloland,3/30/2017,6,2.2,155
+Meloland,3/30/2017,7,1.8,150
+Meloland,3/30/2017,8,3,148
+Meloland,3/30/2017,9,3.1,142
+Meloland,3/30/2017,10,1.7,171
+Meloland,3/30/2017,11,2,217
+Meloland,3/30/2017,12,3.3,212
+Meloland,3/30/2017,13,3.4,228
+Meloland,3/30/2017,14,8.1,264
+Meloland,3/30/2017,15,8.5,255
+Meloland,3/30/2017,16,8.6,256
+Meloland,3/30/2017,17,7.9,253
+Meloland,3/30/2017,18,9,262
+Meloland,3/30/2017,19,8.1,283
+Meloland,3/30/2017,20,5.1,316
+Meloland,3/30/2017,21,7.9,301
+Meloland,3/30/2017,22,4.8,313
+Meloland,3/30/2017,23,6.4,314
+Meloland,3/30/2017,24,7.2,314
+Ripley,3/30/2017,1,1.1,0
+Ripley,3/30/2017,2,1.2,143
+Ripley,3/30/2017,3,1.1,358
+Ripley,3/30/2017,4,1.4,355
+Ripley,3/30/2017,5,1,22
+Ripley,3/30/2017,6,1.2,28
+Ripley,3/30/2017,7,1.1,17
+Ripley,3/30/2017,8,1.7,196
+Ripley,3/30/2017,9,3.5,191
+Ripley,3/30/2017,10,5,195
+Ripley,3/30/2017,11,6.2,194
+Ripley,3/30/2017,12,7.1,197
+Ripley,3/30/2017,13,6.6,221
+Ripley,3/30/2017,14,7.8,226
+Ripley,3/30/2017,15,8.6,227
+Ripley,3/30/2017,16,8.9,232
+Ripley,3/30/2017,17,9,243
+Ripley,3/30/2017,18,7.8,248
+Ripley,3/30/2017,19,4.4,331
+Ripley,3/30/2017,20,5,336
+Ripley,3/30/2017,21,4.5,330
+Ripley,3/30/2017,22,4.7,321
+Ripley,3/30/2017,23,5.8,313
+Ripley,3/30/2017,24,4.4,304
+Palo Verde II,3/30/2017,1,0.8,166
+Palo Verde II,3/30/2017,2,1,165
+Palo Verde II,3/30/2017,3,1.2,144
+Palo Verde II,3/30/2017,4,1,156
+Palo Verde II,3/30/2017,5,1.2,320
+Palo Verde II,3/30/2017,6,0.8,334
+Palo Verde II,3/30/2017,7,1.3,161
+Palo Verde II,3/30/2017,8,3.4,149
+Palo Verde II,3/30/2017,9,3.4,152
+Palo Verde II,3/30/2017,10,4.2,185
+Palo Verde II,3/30/2017,11,6,179
+Palo Verde II,3/30/2017,12,6.4,178
+Palo Verde II,3/30/2017,13,7.7,194
+Palo Verde II,3/30/2017,14,8.7,202
+Palo Verde II,3/30/2017,15,8.6,196
+Palo Verde II,3/30/2017,16,10.2,213
+Palo Verde II,3/30/2017,17,10,227
+Palo Verde II,3/30/2017,18,9.8,234
+Palo Verde II,3/30/2017,19,8.5,269
+Palo Verde II,3/30/2017,20,8.4,295
+Palo Verde II,3/30/2017,21,11.1,299
+Palo Verde II,3/30/2017,22,11,298
+Palo Verde II,3/30/2017,23,9.4,299
+Palo Verde II,3/30/2017,24,9.2,298
+Westmorland North,3/30/2017,1,1.6,344
+Westmorland North,3/30/2017,2,1.2,339
+Westmorland North,3/30/2017,3,1.5,343
+Westmorland North,3/30/2017,4,2,7
+Westmorland North,3/30/2017,5,2.1,14
+Westmorland North,3/30/2017,6,2.4,41
+Westmorland North,3/30/2017,7,1.7,6
+Westmorland North,3/30/2017,8,2.2,350
+Westmorland North,3/30/2017,9,2,353
+Westmorland North,3/30/2017,10,0.8,360
+Westmorland North,3/30/2017,11,1.8,8
+Westmorland North,3/30/2017,12,2.9,12
+Westmorland North,3/30/2017,13,3.3,16
+Westmorland North,3/30/2017,14,5.1,20
+Westmorland North,3/30/2017,15,8.1,50
+Westmorland North,3/30/2017,16,11.3,34
+Westmorland North,3/30/2017,17,11.6,355
+Westmorland North,3/30/2017,18,11.8,351
+Westmorland North,3/30/2017,19,11.8,351
+Westmorland North,3/30/2017,20,9.1,347
+Westmorland North,3/30/2017,21,8.7,346
+Westmorland North,3/30/2017,22,7.4,345
+Westmorland North,3/30/2017,23,7.1,346
+Westmorland North,3/30/2017,24,5.9,345
+Indio 2,3/30/2017,1,2.2,323
+Indio 2,3/30/2017,2,1.8,316
+Indio 2,3/30/2017,3,1.4,307
+Indio 2,3/30/2017,4,0.9,325
+Indio 2,3/30/2017,5,0.5,354
+Indio 2,3/30/2017,6,0.7,60
+Indio 2,3/30/2017,7,0.6,323
+Indio 2,3/30/2017,8,1.5,123
+Indio 2,3/30/2017,9,1.9,132
+Indio 2,3/30/2017,10,2.3,142
+Indio 2,3/30/2017,11,2,180
+Indio 2,3/30/2017,12,1.9,152
+Indio 2,3/30/2017,13,2.2,23
+Indio 2,3/30/2017,14,4.5,296
+Indio 2,3/30/2017,15,7.2,301
+Indio 2,3/30/2017,16,8.3,303
+Indio 2,3/30/2017,17,8.3,307
+Indio 2,3/30/2017,18,6.1,319
+Indio 2,3/30/2017,19,5.1,332
+Indio 2,3/30/2017,20,6.2,325
+Indio 2,3/30/2017,21,7.1,331
+Indio 2,3/30/2017,22,5.6,331
+Indio 2,3/30/2017,23,4.8,331
+Indio 2,3/30/2017,24,4.3,323
+Borrego Springs,3/30/2017,1,0.9,293
+Borrego Springs,3/30/2017,2,1,322
+Borrego Springs,3/30/2017,3,0.9,323
+Borrego Springs,3/30/2017,4,1,316
+Borrego Springs,3/30/2017,5,0.8,311
+Borrego Springs,3/30/2017,6,1.1,279
+Borrego Springs,3/30/2017,7,1.2,310
+Borrego Springs,3/30/2017,8,1.7,123
+Borrego Springs,3/30/2017,9,2.3,286
+Borrego Springs,3/30/2017,10,4.6,250
+Borrego Springs,3/30/2017,11,4.5,248
+Borrego Springs,3/30/2017,12,3.5,297
+Borrego Springs,3/30/2017,13,4.2,293
+Borrego Springs,3/30/2017,14,4.9,306
+Borrego Springs,3/30/2017,15,6.3,291
+Borrego Springs,3/30/2017,16,6.5,291
+Borrego Springs,3/30/2017,17,8.3,265
+Borrego Springs,3/30/2017,18,7.5,258
+Borrego Springs,3/30/2017,19,5.6,282
+Borrego Springs,3/30/2017,20,7.4,312
+Borrego Springs,3/30/2017,21,6.5,306
+Borrego Springs,3/30/2017,22,4.6,306
+Borrego Springs,3/30/2017,23,3.4,306
+Borrego Springs,3/30/2017,24,4.2,321
+La Quinta II,3/30/2017,1,1,281
+La Quinta II,3/30/2017,2,1,297
+La Quinta II,3/30/2017,3,1.1,305
+La Quinta II,3/30/2017,4,0.7,148
+La Quinta II,3/30/2017,5,0.9,280
+La Quinta II,3/30/2017,6,0.8,3
+La Quinta II,3/30/2017,7,1,273
+La Quinta II,3/30/2017,8,1.5,114
+La Quinta II,3/30/2017,9,1.8,116
+La Quinta II,3/30/2017,10,2.6,136
+La Quinta II,3/30/2017,11,2.2,129
+La Quinta II,3/30/2017,12,1.9,94
+La Quinta II,3/30/2017,13,2.5,38
+La Quinta II,3/30/2017,14,5.7,295
+La Quinta II,3/30/2017,15,4.4,305
+La Quinta II,3/30/2017,16,5.9,330
+La Quinta II,3/30/2017,17,8,320
+La Quinta II,3/30/2017,18,5.8,307
+La Quinta II,3/30/2017,19,4,291
+La Quinta II,3/30/2017,20,6,320
+La Quinta II,3/30/2017,21,6.9,315
+La Quinta II,3/30/2017,22,7.8,309
+La Quinta II,3/30/2017,23,6.4,313
+La Quinta II,3/30/2017,24,4.7,293
+Thermal South,3/30/2017,1,1.5,246
+Thermal South,3/30/2017,2,1.1,91
+Thermal South,3/30/2017,3,0.7,253
+Thermal South,3/30/2017,4,1.1,258
+Thermal South,3/30/2017,5,1.4,276
+Thermal South,3/30/2017,6,0.8,267
+Thermal South,3/30/2017,7,1.1,253
+Thermal South,3/30/2017,8,1.1,124
+Thermal South,3/30/2017,9,3,100
+Thermal South,3/30/2017,10,4.2,94
+Thermal South,3/30/2017,11,3.2,106
+Thermal South,3/30/2017,12,2.7,108
+Thermal South,3/30/2017,13,4.6,215
+Thermal South,3/30/2017,14,5.6,298
+Thermal South,3/30/2017,15,12,271
+Thermal South,3/30/2017,16,13.4,277
+Thermal South,3/30/2017,17,11.1,276
+Thermal South,3/30/2017,18,12.3,271
+Thermal South,3/30/2017,19,8.1,301
+Thermal South,3/30/2017,20,8.1,295
+Thermal South,3/30/2017,21,8.6,301
+Thermal South,3/30/2017,22,8.9,298
+Thermal South,3/30/2017,23,7.6,299
+Thermal South,3/30/2017,24,5.3,288

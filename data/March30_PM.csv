@@ -1,0 +1,356 @@
+date,hour,ws,wd,pm10,deployment
+3/30/2017,0,0,0,NA,Buttercup 
+3/30/2017,1,0,0,NA,Buttercup 
+3/30/2017,2,2,3,NA,Buttercup 
+3/30/2017,3,0,0,NA,Buttercup 
+3/30/2017,4,0,0,NA,Buttercup 
+3/30/2017,5,2,65,NA,Buttercup 
+3/30/2017,6,0,0,NA,Buttercup 
+3/30/2017,7,0,0,NA,Buttercup 
+3/30/2017,8,6,112,NA,Buttercup 
+3/30/2017,9,9,141,NA,Buttercup 
+3/30/2017,10,7,151,NA,Buttercup 
+3/30/2017,11,11,141,NA,Buttercup 
+3/30/2017,12,11,171,NA,Buttercup 
+3/30/2017,13,12,179,NA,Buttercup 
+3/30/2017,14,15,173,NA,Buttercup 
+3/30/2017,15,16,181,NA,Buttercup 
+3/30/2017,16,17,188,NA,Buttercup 
+3/30/2017,17,18,250,NA,Buttercup 
+3/30/2017,18,23,248,NA,Buttercup 
+3/30/2017,19,18,251,NA,Buttercup 
+3/30/2017,20,16,262,NA,Buttercup 
+3/30/2017,21,13,253,NA,Buttercup 
+3/30/2017,22,11,281,NA,Buttercup 
+3/30/2017,23,17,267,NA,Buttercup 
+3/30/2017,0,2,73,NA,Cahuilla 
+3/30/2017,1,0,0,NA,Cahuilla 
+3/30/2017,2,0,0,NA,Cahuilla 
+3/30/2017,3,3,69,NA,Cahuilla 
+3/30/2017,4,6,80,NA,Cahuilla 
+3/30/2017,5,7,77,NA,Cahuilla 
+3/30/2017,6,6,91,NA,Cahuilla 
+3/30/2017,7,5,98,NA,Cahuilla 
+3/30/2017,8,7,151,NA,Cahuilla 
+3/30/2017,9,7,176,NA,Cahuilla 
+3/30/2017,10,8,248,NA,Cahuilla 
+3/30/2017,11,10,213,NA,Cahuilla 
+3/30/2017,12,15,228,NA,Cahuilla 
+3/30/2017,13,17,228,NA,Cahuilla 
+3/30/2017,14,28,247,NA,Cahuilla 
+3/30/2017,15,31,238,NA,Cahuilla 
+3/30/2017,16,31,248,NA,Cahuilla 
+3/30/2017,17,17,273,NA,Cahuilla 
+3/30/2017,18,7,291,NA,Cahuilla 
+3/30/2017,19,18,278,NA,Cahuilla 
+3/30/2017,20,7,305,NA,Cahuilla 
+3/30/2017,21,8,298,NA,Cahuilla 
+3/30/2017,22,6,308,NA,Cahuilla 
+3/30/2017,23,10,296,NA,Cahuilla 
+3/30/2017,0,0,0,123.9,Calexico-Ethel Street 
+3/30/2017,1,1.2,326,103.8,Calexico-Ethel Street 
+3/30/2017,2,0,0,100.8,Calexico-Ethel Street 
+3/30/2017,3,2.4,98,67.2,Calexico-Ethel Street 
+3/30/2017,4,1.9,131,45.9,Calexico-Ethel Street 
+3/30/2017,5,1.4,125,69.1,Calexico-Ethel Street 
+3/30/2017,6,1.4,102,109,Calexico-Ethel Street 
+3/30/2017,7,1.7,125,166.1,Calexico-Ethel Street 
+3/30/2017,8,3.2,112,110,Calexico-Ethel Street 
+3/30/2017,9,0,0,71.5,Calexico-Ethel Street 
+3/30/2017,10,2.4,252,56.5,Calexico-Ethel Street 
+3/30/2017,11,5.3,176,48.6,Calexico-Ethel Street 
+3/30/2017,12,5.7,203,29.2,Calexico-Ethel Street 
+3/30/2017,13,12.9,260,195.7,Calexico-Ethel Street 
+3/30/2017,14,13.2,251,148.8,Calexico-Ethel Street 
+3/30/2017,15,13.9,263,194.9,Calexico-Ethel Street 
+3/30/2017,16,14.9,275,173.8,Calexico-Ethel Street 
+3/30/2017,17,14.3,261,487,Calexico-Ethel Street 
+3/30/2017,18,17.5,269,507.9,Calexico-Ethel Street 
+3/30/2017,19,19,288,626.1,Calexico-Ethel Street 
+3/30/2017,20,13.8,290,181.1,Calexico-Ethel Street 
+3/30/2017,21,14.6,272,205.7,Calexico-Ethel Street 
+3/30/2017,22,15.7,279,72,Calexico-Ethel Street 
+3/30/2017,23,12.4,268,107.6,Calexico-Ethel Street 
+3/30/2017,0,4.3,249,16,El Centro-9th Street 
+3/30/2017,1,2.8,241,17,El Centro-9th Street 
+3/30/2017,2,2.4,236,8,El Centro-9th Street 
+3/30/2017,3,2.1,159,20,El Centro-9th Street 
+3/30/2017,4,1.4,128,64,El Centro-9th Street 
+3/30/2017,5,2.1,157,63,El Centro-9th Street 
+3/30/2017,6,0,0,96,El Centro-9th Street 
+3/30/2017,7,3,145,95,El Centro-9th Street 
+3/30/2017,8,2.2,136,81,El Centro-9th Street 
+3/30/2017,9,1.8,257,59,El Centro-9th Street 
+3/30/2017,10,8.8,247,26,El Centro-9th Street 
+3/30/2017,11,9.5,242,17,El Centro-9th Street 
+3/30/2017,12,14,261,114,El Centro-9th Street 
+3/30/2017,13,14.8,252,76,El Centro-9th Street 
+3/30/2017,14,16.4,248,148,El Centro-9th Street 
+3/30/2017,15,17.4,246,259,El Centro-9th Street 
+3/30/2017,16,14.8,244,181,El Centro-9th Street 
+3/30/2017,17,18.7,247,416,El Centro-9th Street 
+3/30/2017,18,17.5,253,126,El Centro-9th Street 
+3/30/2017,19,9.6,287,552,El Centro-9th Street 
+3/30/2017,20,7,283,360,El Centro-9th Street 
+3/30/2017,21,14.3,280,688,El Centro-9th Street 
+3/30/2017,22,14.8,287,227,El Centro-9th Street 
+3/30/2017,23,15.9,287,10,El Centro-9th Street 
+3/30/2017,0,9.2,250,NA,El Centro Naval Air Facility #2 
+3/30/2017,1,11.5,230,NA,El Centro Naval Air Facility #2 
+3/30/2017,2,4.6,240,NA,El Centro Naval Air Facility #2 
+3/30/2017,3,8.1,270,NA,El Centro Naval Air Facility #2 
+3/30/2017,4,10.4,170,NA,El Centro Naval Air Facility #2 
+3/30/2017,5,3.5,170,NA,El Centro Naval Air Facility #2 
+3/30/2017,6,4.6,190,NA,El Centro Naval Air Facility #2 
+3/30/2017,7,6.9,280,NA,El Centro Naval Air Facility #2 
+3/30/2017,9,13.8,260,NA,El Centro Naval Air Facility #2 
+3/30/2017,10,8.1,230,NA,El Centro Naval Air Facility #2 
+3/30/2017,11,20.7,270,NA,El Centro Naval Air Facility #2 
+3/30/2017,12,34.5,250,NA,El Centro Naval Air Facility #2 
+3/30/2017,13,29.9,240,NA,El Centro Naval Air Facility #2 
+3/30/2017,14,33.4,240,NA,El Centro Naval Air Facility #2 
+3/30/2017,15,25.3,240,NA,El Centro Naval Air Facility #2 
+3/30/2017,16,32.2,250,NA,El Centro Naval Air Facility #2 
+3/30/2017,17,23,260,NA,El Centro Naval Air Facility #2 
+3/30/2017,18,17.3,290,NA,El Centro Naval Air Facility #2 
+3/30/2017,19,9.2,320,NA,El Centro Naval Air Facility #2 
+3/30/2017,20,24.2,310,NA,El Centro Naval Air Facility #2 
+3/30/2017,21,19.6,310,NA,El Centro Naval Air Facility #2 
+3/30/2017,22,28.8,310,NA,El Centro Naval Air Facility #2 
+3/30/2017,23,23,300,NA,El Centro Naval Air Facility #2 
+3/30/2017,0,5.8,270,NA,Imperial County Airport 
+3/30/2017,1,4.6,220,NA,Imperial County Airport 
+3/30/2017,2,4.6,220,NA,Imperial County Airport 
+3/30/2017,3,5.8,120,NA,Imperial County Airport 
+3/30/2017,4,6.9,130,NA,Imperial County Airport 
+3/30/2017,6,3.5,150,NA,Imperial County Airport 
+3/30/2017,7,4.6,150,NA,Imperial County Airport 
+3/30/2017,8,5.8,200,NA,Imperial County Airport 
+3/30/2017,9,6.9,250,NA,Imperial County Airport 
+3/30/2017,10,10.9,260,NA,Imperial County Airport 
+3/30/2017,11,19.3,270,NA,Imperial County Airport 
+3/30/2017,12,26.5,250,NA,Imperial County Airport 
+3/30/2017,13,25.9,250,NA,Imperial County Airport 
+3/30/2017,14,25.9,240,NA,Imperial County Airport 
+3/30/2017,15,27.3,232,NA,Imperial County Airport 
+3/30/2017,16,18.4,240,NA,Imperial County Airport 
+3/30/2017,17,19.6,250,NA,Imperial County Airport 
+3/30/2017,18,19.6,300,NA,Imperial County Airport 
+3/30/2017,19,13.8,300,NA,Imperial County Airport 
+3/30/2017,20,11.5,290,NA,Imperial County Airport 
+3/30/2017,21,24.7,290,NA,Imperial County Airport 
+3/30/2017,22,16.7,305,NA,Imperial County Airport 
+3/30/2017,23,20.7,290,NA,Imperial County Airport 
+3/30/2017,0,8.6,128,10,Niland-English Road 
+3/30/2017,1,6.5,124,11,Niland-English Road 
+3/30/2017,2,5,102,15,Niland-English Road 
+3/30/2017,3,5.4,127,20,Niland-English Road 
+3/30/2017,4,8.3,117,21,Niland-English Road 
+3/30/2017,5,4.4,101,34,Niland-English Road 
+3/30/2017,6,4.4,111,64,Niland-English Road 
+3/30/2017,7,3.6,150,55,Niland-English Road 
+3/30/2017,8,7.3,142,27,Niland-English Road 
+3/30/2017,9,5.3,170,34,Niland-English Road 
+3/30/2017,10,8,183,49,Niland-English Road 
+3/30/2017,11,7.9,220,31,Niland-English Road 
+3/30/2017,12,15.2,254,22,Niland-English Road 
+3/30/2017,13,24.1,265,150,Niland-English Road 
+3/30/2017,14,28.8,257,436,Niland-English Road 
+3/30/2017,15,28.8,248,534,Niland-English Road 
+3/30/2017,16,38.1,254,995,Niland-English Road 
+3/30/2017,17,36.9,251,995,Niland-English Road 
+3/30/2017,18,27.7,251,995,Niland-English Road 
+3/30/2017,19,23.4,247,516,Niland-English Road 
+3/30/2017,20,16.8,292,79,Niland-English Road 
+3/30/2017,21,24.8,312,189,Niland-English Road 
+3/30/2017,22,24.3,310,109,Niland-English Road 
+3/30/2017,23,21.8,306,69,Niland-English Road 
+3/30/2017,1,2.3,73,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,2,1.7,78,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,4,0,0,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,5,3.5,30,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,6,1.7,175,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,7,3.5,113,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,8,6.9,150,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,9,10.4,150,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,10,5.8,140,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,11,6.5,120,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,12,6,40,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,13,18.4,300,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,14,26.5,290,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,15,19.6,290,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,16,23.7,300,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,17,21.3,312,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,18,24.7,335,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,19,24.7,325,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,20,29.3,315,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,21,20.7,320,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,22,17.8,315,NA,Thermal-Jacqueline Cochran Regional Airport 
+3/30/2017,0,3,196,13,Westmorland-W 1st Street 
+3/30/2017,1,2.6,158,11,Westmorland-W 1st Street 
+3/30/2017,2,2.5,147,22,Westmorland-W 1st Street 
+3/30/2017,3,1.9,213,13,Westmorland-W 1st Street 
+3/30/2017,4,3.9,146,25,Westmorland-W 1st Street 
+3/30/2017,5,6.8,158,42,Westmorland-W 1st Street 
+3/30/2017,6,5.5,151,51,Westmorland-W 1st Street 
+3/30/2017,7,3.2,138,45,Westmorland-W 1st Street 
+3/30/2017,8,4.6,155,50,Westmorland-W 1st Street 
+3/30/2017,9,1.4,201,28,Westmorland-W 1st Street 
+3/30/2017,10,4.9,177,14,Westmorland-W 1st Street 
+3/30/2017,11,6.4,225,30,Westmorland-W 1st Street 
+3/30/2017,12,7.2,251,83,Westmorland-W 1st Street 
+3/30/2017,13,13,226,201,Westmorland-W 1st Street 
+3/30/2017,14,10.7,261,142,Westmorland-W 1st Street 
+3/30/2017,15,19.2,279,577,Westmorland-W 1st Street 
+3/30/2017,16,20.2,273,525,Westmorland-W 1st Street 
+3/30/2017,17,23.9,273,995,Westmorland-W 1st Street 
+3/30/2017,18,24.8,289,113,Westmorland-W 1st Street 
+3/30/2017,19,13.7,305,61,Westmorland-W 1st Street 
+3/30/2017,20,14.4,294,78,Westmorland-W 1st Street 
+3/30/2017,21,14.2,292,35,Westmorland-W 1st Street 
+3/30/2017,22,15.8,289,20.6,Westmorland-W 1st Street 
+3/30/2017,23,10.6,302,21.23,Westmorland-W 1st Street 
+3/30/2017,0,4.2,293,20.6,Indio-Jackson Street 
+3/30/2017,1,4.1,286,21.23,Indio-Jackson Street 
+3/30/2017,2,2.4,282,20.35,Indio-Jackson Street 
+3/30/2017,3,1.5,142,29.22,Indio-Jackson Street 
+3/30/2017,4,0,0,30.12,Indio-Jackson Street 
+3/30/2017,5,1.2,62,34.56,Indio-Jackson Street 
+3/30/2017,6,0,0,87.44,Indio-Jackson Street 
+3/30/2017,7,2.9,138,60.82,Indio-Jackson Street 
+3/30/2017,8,4.3,148,37.86,Indio-Jackson Street 
+3/30/2017,9,5.8,143,20.19,Indio-Jackson Street 
+3/30/2017,10,5,175,30.53,Indio-Jackson Street 
+3/30/2017,11,3.5,141,27.04,Indio-Jackson Street 
+3/30/2017,12,3.7,48,18.85,Indio-Jackson Street 
+3/30/2017,13,14.7,277,420.78,Indio-Jackson Street 
+3/30/2017,14,15.8,285,65.81,Indio-Jackson Street 
+3/30/2017,15,14.8,279,142.85,Indio-Jackson Street 
+3/30/2017,16,13.1,286,134.04,Indio-Jackson Street 
+3/30/2017,17,13.5,300,86.1,Indio-Jackson Street 
+3/30/2017,18,15.8,330,391.55,Indio-Jackson Street 
+3/30/2017,19,14.7,318,165.38,Indio-Jackson Street 
+3/30/2017,20,16.6,308,64.27,Indio-Jackson Street 
+3/30/2017,21,15.6,316,67.44,Indio-Jackson Street 
+3/30/2017,22,13.2,316,11.37,Indio-Jackson Street 
+3/30/2017,23,9.5,306,21.1,Indio-Jackson Street 
+3/30/2017,0,2.2,237,NA,Joshua Tree National Park 
+3/30/2017,1,2,202,NA,Joshua Tree National Park 
+3/30/2017,2,2.2,226,NA,Joshua Tree National Park 
+3/30/2017,3,1.8,136,NA,Joshua Tree National Park 
+3/30/2017,4,2.5,263,NA,Joshua Tree National Park 
+3/30/2017,5,3.4,213,NA,Joshua Tree National Park 
+3/30/2017,6,4.5,170,NA,Joshua Tree National Park 
+3/30/2017,7,3.4,216,NA,Joshua Tree National Park 
+3/30/2017,8,4.7,263,NA,Joshua Tree National Park 
+3/30/2017,9,10.5,185,NA,Joshua Tree National Park 
+3/30/2017,10,12.5,205,NA,Joshua Tree National Park 
+3/30/2017,11,11.9,205,NA,Joshua Tree National Park 
+3/30/2017,12,9.8,214,NA,Joshua Tree National Park 
+3/30/2017,13,9.4,220,NA,Joshua Tree National Park 
+3/30/2017,14,8.5,252,NA,Joshua Tree National Park 
+3/30/2017,15,11.4,245,NA,Joshua Tree National Park 
+3/30/2017,16,13.6,263,NA,Joshua Tree National Park 
+3/30/2017,17,22.4,291,NA,Joshua Tree National Park 
+3/30/2017,18,28.2,301,NA,Joshua Tree National Park 
+3/30/2017,19,20.4,328,NA,Joshua Tree National Park 
+3/30/2017,20,28.4,310,NA,Joshua Tree National Park 
+3/30/2017,21,29.3,315,NA,Joshua Tree National Park 
+3/30/2017,22,25.5,317,NA,Joshua Tree National Park 
+3/30/2017,23,23.3,316,NA,Joshua Tree National Park 
+3/30/2017,0,1.6,287,11.37,Palm Springs-Fire Station 
+3/30/2017,1,0,0,21.1,Palm Springs-Fire Station 
+3/30/2017,2,0,0,16.16,Palm Springs-Fire Station 
+3/30/2017,3,0,0,14.88,Palm Springs-Fire Station 
+3/30/2017,4,1.3,300,17.28,Palm Springs-Fire Station 
+3/30/2017,5,0,0,17.42,Palm Springs-Fire Station 
+3/30/2017,6,1.2,207,21.69,Palm Springs-Fire Station 
+3/30/2017,7,1.1,199,18.89,Palm Springs-Fire Station 
+3/30/2017,8,2.1,230,20.93,Palm Springs-Fire Station 
+3/30/2017,9,2.5,167,18.87,Palm Springs-Fire Station 
+3/30/2017,10,1.9,224,22.97,Palm Springs-Fire Station 
+3/30/2017,11,3.9,164,21.89,Palm Springs-Fire Station 
+3/30/2017,12,4.3,134,26.05,Palm Springs-Fire Station 
+3/30/2017,13,2,313,34.39,Palm Springs-Fire Station 
+3/30/2017,14,15.9,292,143.32,Palm Springs-Fire Station 
+3/30/2017,15,11.7,286,50.53,Palm Springs-Fire Station 
+3/30/2017,16,15.5,291,159.11,Palm Springs-Fire Station 
+3/30/2017,17,17.1,298,171.63,Palm Springs-Fire Station 
+3/30/2017,18,11.5,299,75.64,Palm Springs-Fire Station 
+3/30/2017,19,16.6,326,26.94,Palm Springs-Fire Station 
+3/30/2017,20,15.1,310,35.75,Palm Springs-Fire Station 
+3/30/2017,21,13.3,294,59.76,Palm Springs-Fire Station 
+3/30/2017,22,10.5,297,54.53,Palm Springs-Fire Station 
+3/30/2017,23,7.8,289,Err:509,Palm Springs-Fire Station 
+3/30/2017,0,2.6,158,NA,Palm Springs Regional Airport 
+3/30/2017,1,1.7,145,NA,Palm Springs Regional Airport 
+3/30/2017,2,1.7,100,NA,Palm Springs Regional Airport 
+3/30/2017,3,6,232,NA,Palm Springs Regional Airport 
+3/30/2017,4,1.2,88,NA,Palm Springs Regional Airport 
+3/30/2017,5,4,192,NA,Palm Springs Regional Airport 
+3/30/2017,6,1.7,112,NA,Palm Springs Regional Airport 
+3/30/2017,7,3.2,112,NA,Palm Springs Regional Airport 
+3/30/2017,8,8.5,142,NA,Palm Springs Regional Airport 
+3/30/2017,9,4.6,50,NA,Palm Springs Regional Airport 
+3/30/2017,10,9.2,170,NA,Palm Springs Regional Airport 
+3/30/2017,11,7.7,57,NA,Palm Springs Regional Airport 
+3/30/2017,12,11.5,87,NA,Palm Springs Regional Airport 
+3/30/2017,13,15,30,NA,Palm Springs Regional Airport 
+3/30/2017,14,32.2,240,NA,Palm Springs Regional Airport 
+3/30/2017,15,32.2,250,NA,Palm Springs Regional Airport 
+3/30/2017,16,37.1,238,NA,Palm Springs Regional Airport 
+3/30/2017,17,20.4,255,NA,Palm Springs Regional Airport 
+3/30/2017,18,16.4,268,NA,Palm Springs Regional Airport 
+3/30/2017,19,32.5,320,NA,Palm Springs Regional Airport 
+3/30/2017,20,33.9,312,NA,Palm Springs Regional Airport 
+3/30/2017,21,23,300,NA,Palm Springs Regional Airport 
+3/30/2017,22,16.1,310,NA,Palm Springs Regional Airport 
+3/30/2017,23,10.6,292,NA,Palm Springs Regional Airport 
+3/30/2017,0,15,242,NA,PINYON 
+3/30/2017,1,12,253,NA,PINYON 
+3/30/2017,2,12,244,NA,PINYON 
+3/30/2017,3,7,252,NA,PINYON 
+3/30/2017,4,14,238,NA,PINYON 
+3/30/2017,5,17,250,NA,PINYON 
+3/30/2017,6,13,259,NA,PINYON 
+3/30/2017,7,8,259,NA,PINYON 
+3/30/2017,8,9,255,NA,PINYON 
+3/30/2017,9,12,257,NA,PINYON 
+3/30/2017,10,17,257,NA,PINYON 
+3/30/2017,11,19,253,NA,PINYON 
+3/30/2017,12,25,259,NA,PINYON 
+3/30/2017,13,26,257,NA,PINYON 
+3/30/2017,14,28,258,NA,PINYON 
+3/30/2017,15,26,260,NA,PINYON 
+3/30/2017,16,27,262,NA,PINYON 
+3/30/2017,17,28,258,NA,PINYON 
+3/30/2017,18,30,248,NA,PINYON 
+3/30/2017,19,31,248,NA,PINYON 
+3/30/2017,20,25,260,NA,PINYON 
+3/30/2017,21,15,273,NA,PINYON 
+3/30/2017,22,8,299,NA,PINYON 
+3/30/2017,23,12,271,NA,PINYON
+3/30/2017,0,3,196,10,Brawley-220 Main Street 
+3/30/2017,1,2.6,158,21,Brawley-220 Main Street 
+3/30/2017,2,2.5,147,27,Brawley-220 Main Street 
+3/30/2017,3,1.9,213,28,Brawley-220 Main Street 
+3/30/2017,4,3.9,146,29,Brawley-220 Main Street 
+3/30/2017,5,6.8,158,36,Brawley-220 Main Street 
+3/30/2017,6,5.5,151,50,Brawley-220 Main Street 
+3/30/2017,7,3.2,138,44,Brawley-220 Main Street 
+3/30/2017,8,4.6,155,68,Brawley-220 Main Street 
+3/30/2017,9,1.4,201,41,Brawley-220 Main Street 
+3/30/2017,10,4.9,177,12,Brawley-220 Main Street 
+3/30/2017,11,6.4,225,9,Brawley-220 Main Street 
+3/30/2017,12,7.2,251,97,Brawley-220 Main Street 
+3/30/2017,13,13,226,146,Brawley-220 Main Street 
+3/30/2017,14,10.7,261,91,Brawley-220 Main Street 
+3/30/2017,15,19.2,279,274,Brawley-220 Main Street 
+3/30/2017,16,20.2,273,367,Brawley-220 Main Street 
+3/30/2017,17,23.9,273,651,Brawley-220 Main Street 
+3/30/2017,18,24.8,289,995,Brawley-220 Main Street 
+3/30/2017,19,13.7,305,995,Brawley-220 Main Street 
+3/30/2017,20,14.4,294,152,Brawley-220 Main Street 
+3/30/2017,21,14.2,292,69,Brawley-220 Main Street 
+3/30/2017,22,15.8,289,73,Brawley-220 Main Street 
+3/30/2017,23,10.6,302,48,Brawley-220 Main Street 
