@@ -3,6 +3,7 @@ library(tidyverse)
 library(lubridate)
 library(readxl)
 load_all("~/code/Roses")
+load_all()
 
 # pull TEOM data
 query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, ", 
@@ -48,6 +49,10 @@ met_df$ws <- as.numeric(met_df$ws)
 met_df$wd <- as.numeric(met_df$wd)
 met_df <- filter(met_df, !is.na(ws) & !is.na(wd)) %>%
     filter(!(deployment %in% c('La Quinta II', 'Westmorland North')))
+met_final <- read.csv("./data/Other_IID_Stations.csv")
+met_final$datetime <- as.POSIXct(met_final$datetime, format="%m/%d/%Y %H:%M", 
+                                 tz='PDT')
+met_df <- rbind(met_df, met_final)
 
 teom_data <- pm_df %>% left_join(met_df, by=c("deployment", "datetime"))
 teom_other <- read.csv("./data/March30_PM.csv")

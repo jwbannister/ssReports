@@ -21,29 +21,46 @@ zones <- data.frame(deployment=c("Torres-Martinez", "Salton Sea Park",
                              rep("Salton City", 2)))
 
 # detect dust events
-met_df$date <- as.Date(substr(met_df$datetime %m-% minutes(30), 1, 10)) 
-pm_df$date <- as.Date(substr(pm_df$datetime %m-% minutes(30), 1, 10))
-pm_summary <- pm_df %>% select(-teom_bp, -teom_at, -teom_rh) %>% 
+met_clean$date <- as.Date(met_clean$datetime %m-% minutes(1), 
+                         tz='America/Los_Angeles')
+pm_clean$date <- as.Date(pm_clean$datetime %m-% minutes(1), 
+                         tz='America/Los_Angeles')
+pm_summary <- pm_clean %>% select(-teom_bp, -teom_at, -teom_rh) %>% 
+    filter(!is.na(date)) %>%
     group_by(deployment, date) %>%
-    summarize(daily.pm10.avg = round(sum(pm10)/24, 1), 
-              daily.pm25.avg = round(sum(pm25)/24, 1))
+    summarize(daily.pm10.avg = round(sum(pm10, na.rm=T)/sum(!is.na(pm10)), 1), 
+              daily.pm25.avg = round(sum(pm25, na.rm=T)/sum(!is.na(pm25)), 1),
+              valid.hours.pm10 = sum(!is.na(pm10)), 
+              valid.hours.pm25 = sum(!is.na(pm25)))
+pm_summary$valid.pm10 <- sapply(pm_summary$valid.hours.pm10, 
+                                function(x) if_else(x>=18, T, F))
+pm_summary$valid.pm25 <- sapply(pm_summary$valid.hours.pm25, 
+                                function(x) if_else(x>=18, T, F))
+for (i in 1:nrow(pm_summary)){
+    if (!pm_summary$valid.pm10[i] | is.nan(pm_summary$daily.pm10.avg[i])){
+        pm_summary$daily.pm10.avg[i] <- NA
+    } 
+    if (!pm_summary$valid.pm25[i] | is.nan(pm_summary$daily.pm25.avg[i])){
+        pm_summary$daily.pm25.avg[i] <- NA
+    }
+}
+
 events <- pm_summary %>% ungroup() %>%
-    filter(daily.pm10.avg > pm10_cutoff | 
-           daily.pm25.avg > pm25_cutoff) %>%
-arrange(date)
-event_days <- unique(events$date)
+    filter((daily.pm10.avg > pm10_cutoff & valid.pm10) | 
+           (daily.pm25.avg > pm25_cutoff & valid.pm25)) %>%
+    arrange(date)
 
 # get background for use in dust rose plot
 background <- plot_salton_background()
 # set coordinates for determining daylight hours
 salton_sea <- matrix(c(-115.8434, 33.3286), nrow=1) 
 
-event_list <- vector(mode="list", length=length(event_days))
-names(event_list) <- event_days
+event_list <- vector(mode="list", length=length(unique(events$date)))
+names(event_list) <- unique(events$date)
 for (i in names(event_list)){ 
-    pm_tmp <- pm_df %>% filter(date==i) %>%
+    pm_tmp <- pm_clean %>% filter(date==i) %>%
         select(deployment, datetime, pm10, pm25)
-    met_tmp <- met_df %>% filter(date==i) %>%
+    met_tmp <- met_clean %>% filter(date==i) %>%
         select(deployment, datetime, ws, wd)
     event_df <- left_join(pm_tmp, met_tmp, by=c("deployment", "datetime")) %>%
         left_join(zones, by="deployment")
@@ -82,17 +99,22 @@ for (i in names(event_list)){
     tmp_zone <- select(zones, -deployment)[!duplicated(select(zones, -deployment)), ]
     zone_names <- c("N"="North", "E"="East", "W"="West")
     for (j in c("N", "E", "W")){
-        tmp_pm <- filter(daylight_pm, zone==j)
-        worst_hour <- hour(tmp_pm[tmp_pm$pm10==max(tmp_pm$pm10), ]$datetime) - 1
-        tmp_wind <- filter(daylight_wind, zone==j, hour(datetime)==worst_hour)
-        target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime
-        image_tmp <- image_df %>% 
-            left_join(tmp_zone, by=c("deployment"="camera")) %>%
-            filter(date(datetime)==date(target.datetime) & zone==j) %>%
-            filter(hour(datetime)==worst_hour) %>%
-            mutate(delta = abs(difftime(datetime, target.datetime)))
-        pic.datetime <- filter(image_tmp, delta==min(delta))$datetime
-        image.key <- substring(filter(image_tmp, delta==min(delta))$s3_url, 49)
+        tmp_pm <- filter(daylight_pm, zone==j & !is.na(pm10))
+        if (nrow(tmp_pm)==0){
+            image.key <- c()
+        } else{
+
+            worst_hour <- hour(tmp_pm[tmp_pm$pm10==max(tmp_pm$pm10), ]$datetime) - 1
+            tmp_wind <- filter(daylight_wind, zone==j & hour(datetime)==worst_hour)
+            target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime
+            image_tmp <- image_df %>% 
+                left_join(tmp_zone, by=c("deployment"="camera")) %>%
+                filter(date(datetime)==date(target.datetime) & zone==j) %>%
+                filter(hour(datetime)==worst_hour) %>%
+                mutate(delta = abs(difftime(datetime, target.datetime)))
+            pic.datetime <- filter(image_tmp, delta==min(delta))$datetime
+            image.key <- substring(filter(image_tmp, delta==min(delta))$s3_url, 49)
+        }
         if (length(image.key)!=0){
             image.file <- tempfile()
             S3_bucket_access(image.key, image.file)
@@ -133,9 +155,9 @@ for (i in names(event_list)){
                                event_list[[i]]$photos$N), ncol=3)
     dev.off()
     # build dustrose map
-    event_list[[i]]$map <- event_plot(loc_df, 
-                                      event_df[complete.cases(event_df), ], 
-                                      background)
+    plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
+        filter(!is.na(pm10) &  !is.na(wd))
+    event_list[[i]]$map <- event_plot(loc_df, plot_data, background)
     event_list[[i]]$map_img <- paste0(tempfile(), ".png")
     png(filename=event_list[[i]]$map_img, width=8, height=3, units="in", 
         res=300)
@@ -144,4 +166,6 @@ for (i in names(event_list)){
 }
 names(events) <- c("Deployment", "Date", 
                    "24-hour PM<sub>10</sub> Avg. (ug/m<sup>3</sup>)", 
-                   "24-hour PM<sub>2.5</sub> Avg. (ug/m<sup>3</sup>)")
+                   "24-hour PM<sub>2.5</sub> Avg. (ug/m<sup>3</sup>)", 
+                   "valid.hours.pm10", "valid.hours.pm25", "valid.pm10", 
+                   "valid.pm25")

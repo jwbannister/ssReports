@@ -10,7 +10,7 @@ flag_df$interval <- difftime(flag_df$end.datetime,
                              flag_df$start.datetime, units="hours")
                                      
 invalid_summary <- flag_df %>% 
-    filter(invalidate, !(deployment %in% c('1001', '1002', '1003', '1004'))) %>%
+    filter(invalidate, deployment %in% unique(pm_clean$deployment)) %>%
     group_by(deployment, flag) %>%
     summarize(hours = as.integer(sum(interval)))
 invalid_spread <- invalid_summary %>%

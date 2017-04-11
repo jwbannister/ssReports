@@ -11,7 +11,7 @@ pm_plot <- function(locs, df1, background){
     fl <- tempfile()
     for (j in unique(df1$deployment)){
         p <- filter(df1, deployment==j) %>% 
-            brian_rose_image_only(., value='pm10', dir='wd', valueseq=valueseq)
+            plot_rose_image_only(., value='pm10', dir='wd', valueseq=valueseq)
         png(filename=fl, bg="transparent")
         print(p)
         dev.off()
@@ -46,7 +46,7 @@ wind_plot <- function(locs, df1, background){
     fl <- tempfile()
     for (j in unique(df1$deployment)){
         p <- filter(df1, deployment==j) %>% 
-            brian_rose_image_only(., value='ws', dir='wd', valueseq=valueseq)
+            plot_rose_image_only(., value='ws', dir='wd', valueseq=valueseq)
         png(filename=fl, bg="transparent")
         print(p)
         dev.off()
