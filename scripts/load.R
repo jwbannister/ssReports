@@ -23,7 +23,7 @@ query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, t.pm25, ",
                  "AS invalid_rh ",
                  "FROM teom.pm_1hour t JOIN info.deployments i ",
                  "ON t.deployment_id = i.deployment_id ", 
-                 "WHERE (datetime - '1 second'::interval)::date ",
+                 "WHERE (DATE_TRUNC('minute', datetime) - '1 second'::interval)::date ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
 pm_df <- query_salton(query1)
@@ -57,7 +57,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "AS invalid_d10 ",
                  "FROM met.met_1hour m JOIN info.deployments i ",
                  "ON m.deployment_id = i.deployment_id ", 
-                 "WHERE (datetime - '1 second'::interval)::date ",
+                 "WHERE (DATE_TRUNC('minute', datetime) - '1 second'::interval)::date ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date ",
                  "AND i.deployment IN ('Bombay Beach', 'Sonny Bono', ", 
@@ -82,10 +82,14 @@ flag_df <- flag_pull %>% filter(between(as.Date(start.date),
                                         as.Date(start_date), 
                                         as.Date(end_date))) %>%
 select(deployment, start.date, start.hour, end.date, end.hour, flag, 
-       flag_note, reviewed, invalidate) %>%
-filter(flag %in% c("Site Visit", "TEOM Op Mode Error", "TEOM Status Error", 
-                   "Excessive Negative PM10 Concentration", 
-                   "Missing TEOM Data"))
+       flag_note, reviewed, invalidate) %>% filter(invalidate)
+flag_df$flag <- 
+    sapply(flag_df$flag, 
+           function(x) if_else(x %in% c("Site Visit", "TEOM Op Mode Error", 
+                                        "TEOM Status Error", 
+                                        "Excessive Negative PM10 Concentration", 
+                                        "Missing TEOM Data"), x, 
+                               "Other Invalidation"))
 
 # build full list of hours in period to calculate data capture ratio
 hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00")),

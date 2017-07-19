@@ -13,23 +13,23 @@ panderOptions('keep.line.breaks', TRUE)
 ```
 
 ```{r load, include=F}
-source("~/code/ssReports/scripts/load.R")
+source("load.R")
 ```
 
 ```{r met_summary, echo=F, message=F, results='hide'}
-source("~/code/ssReports/scripts/met_summary.R")
+source("met_summary.R")
 ```
 
 ```{r teom_summary, echo=F, message=F, results='hide'}
-source("~/code/ssReports/scripts/teom_summary.R")
+source("teom_summary.R")
 ```
 
 ```{r flag_summary, echo=F, message=F, results='hide'}
-source("~/code/ssReports/scripts/flag_summary.R")
+source("flag_summary.R")
 ```
 
 ```{r find_events, echo=F, message=F, warning=F, results='hide'}
-source("~/code/ssReports/scripts/events.R")
+source("events.R")
 ```
 
 ```{r met_table, echo=F, results='asis'}
@@ -68,7 +68,7 @@ cat("<p style=\"page-break-after:always;\"></p> \n")
 ```{r flags_events, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
 cat("\n## Data Review -  Flagged Data\n")
-cat("\n##### (Flagged invalid hours, particulate monitoring)\n<br>")
+cat("\n##### (Flagged invalid hours, particulate monitoring. Invalid data flags may overlap in time.)\n<br>")
 cat("<p style=\"font-size: 8pt;\">")
 pandoc.table(invalid_spread, split.table=Inf)
 cat("</p>")
@@ -82,20 +82,26 @@ pandoc.table(select(events, 1:4), split.table=Inf)
 cat("</p>")
 cat(" \n\n## Comments \n")
 #cat("<div style=\"font-size: 10pt;\">")
-comment_dir <- paste0("~/dropbox/salton/Salton Sea Field Operations/", 
-                      "0_Level2/Monthly Reports/")
-comment_file <- paste0(comment_dir, "comments_", month(start_date), 
-                       year(start_date), ".txt")
-    if (file.exists(comment_file)){
-        for (i in 1:length(readLines(comment_file))){
-            cat(" \n", readLines(comment_file)[i], " \n", sep="")
+gdrive_comments <- system(paste0(getwd(), "/gdrive list ", 
+                  "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents\""), intern=T)  
+cmnt_fl <- tempfile()
+write.table(gdrive_comments, file=cmnt_fl, quote=F, row.names=F, col.names=F)
+comment_list <- read.table(cmnt_fl, header=F, skip=1)
+comment_file <- paste0("comments_", month(start_date), year(start_date), ".txt")
+    if (comment_file %in% comment_list[ , 2]){
+        index <- which(comment_list[ , 2]==comment_file)
+        system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
+                      comment_list[ , 1][index]))
+        for (i in 1:length(readLines(paste0(tempdir(), "/", comment_file)))){
+            cat(" \n", readLines(paste0(tempdir(), "/", comment_file))[i], 
+                " \n", sep="")
         }
     }
 #cat("</div>")
 cat("<p style=\"page-break-after:always;\"></p> \n")
 ```
 
-```{r event_pages, echo=F, results='asis', fig.height=4}
+```{r event_pages, echo=F, results='asis', fig.height=3.5}
 for (i in 1:length(event_list)){
     report_header(start_date, end_date, report_date)
     cat(paste0(" \n# Dust Event - ", 

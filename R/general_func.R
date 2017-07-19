@@ -24,4 +24,15 @@ tag_value <- function(val, css_tag, threshold){
 }
 
     
+report_header_multi <- function(start_date, end_date, report_date){
+    cat("<img style=\"float: right;\" src=\"/home/john/code/ssReports/data/logo.png\"> \n")
+    cat(" \n# ", as.character(month(start_date, label=T, abbr=F)), "-", 
+        as.character(month(end_date, label=T, abbr=F)), " ", 
+        year(start_date), " Monitoring Summary \n")
+    cat(" \n## IID Air Quality Program\n")
+    cat(" \n##### Summary Period: ", format(start_date, "%m-%d-%Y"), " through ", 
+        format(end_date, "%m-%d-%Y"), " \n")
+    cat(" \n##### Report Date: ", report_date, " \n") 
+    cat("<hr class=\"style1\">")
+}
     

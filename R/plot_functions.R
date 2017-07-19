@@ -53,7 +53,6 @@ g_legend<-function(a.gplot){
 #' @param external_points 
 plot_salton_background <- function(){
   map <- raster::stack("~/code/ssReports/data/landsat8_true_color_120m_latlon.tif")
-  
   ext <- sp::SpatialPointsDataFrame(coords=data.frame(x=c(-116.25, -115.4), 
                                                  y=c(33.015, 33.66)), 
                                 data=data.frame(id=1:2), 
