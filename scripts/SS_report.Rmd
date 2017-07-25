@@ -5,7 +5,8 @@ css: style.css
 ---
 
 ```{r setup, include=FALSE}
-load_all()
+load_all("~/code/ssReports")
+load_all("~/code/Roses")
 library(pander)
 panderOptions('knitr.auto.asis', FALSE)
 panderOptions('table.alignment.rownames', 'left')
@@ -80,18 +81,23 @@ events[[4]] <- tag_value(events[[4]], "a", 35)
 cat("<p style=\"font-size: 10pt;\">")
 pandoc.table(select(events, 1:4), split.table=Inf)
 cat("</p>")
-cat(" \n\n## Comments \n")
 #cat("<div style=\"font-size: 10pt;\">")
 gdrive_comments <- system(paste0(getwd(), "/gdrive list ", 
                   "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents\""), intern=T)  
 cmnt_fl <- tempfile()
 write.table(gdrive_comments, file=cmnt_fl, quote=F, row.names=F, col.names=F)
-comment_list <- read.table(cmnt_fl, header=F, skip=1)
+comment_list <- read.table(cmnt_fl, header=F, skip=2)
 comment_file <- paste0("comments_", month(start_date), year(start_date), ".txt")
     if (comment_file %in% comment_list[ , 2]){
         index <- which(comment_list[ , 2]==comment_file)
         system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
                       comment_list[ , 1][index]))
+        if ((nrow(events) + 
+             length(readLines(paste0(tempdir(), "/", comment_file)))) > 33){
+            cat("<p style=\"page-break-after:always;\"></p> \n")
+            report_header(start_date, end_date, report_date)
+                 }
+        cat(" \n\n## Comments \n")
         for (i in 1:length(readLines(paste0(tempdir(), "/", comment_file)))){
             cat(" \n", readLines(paste0(tempdir(), "/", comment_file))[i], 
                 " \n", sep="")
@@ -116,7 +122,9 @@ for (i in 1:length(event_list)){
     cat(paste0("<p>![](", event_list[[i]]$time_img, ")</p>"))
     cat("<hr class=\"style2\">")
     cat(paste0("<p>![](", event_list[[i]]$photo_img, ")</p>"))
-    cat("<hr class=\"style2\">")
+    if (nrow(filter(select(events, 1:4), Date==names(event_list)[i])) < 4){
+        cat("<hr class=\"style2\">")
+    }
     cat("<center>")
     print(event_list[[i]]$map)
     cat("</center>")

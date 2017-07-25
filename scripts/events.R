@@ -1,4 +1,4 @@
-load_all()
+load_all("~/code/ssReports")
 load_all("~/code/Roses")
 library(tidyverse)
 library(lubridate)
@@ -103,10 +103,9 @@ for (i in names(event_list)){
         if (nrow(tmp_pm)==0){
             image.key <- c()
         } else{
-
             worst_hour <- hour(tmp_pm[tmp_pm$pm10==max(tmp_pm$pm10), ]$datetime) - 1
             tmp_wind <- filter(daylight_wind, zone==j & hour(datetime)==worst_hour)
-            target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime
+            target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime[1]
             image_tmp <- image_df %>% 
                 left_join(tmp_zone, by=c("deployment"="camera")) %>%
                 filter(date(datetime)==date(target.datetime) & zone==j) %>%
@@ -155,8 +154,24 @@ for (i in names(event_list)){
                                event_list[[i]]$photos$N), ncol=3)
     dev.off()
     # build dustrose map
+#    plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
+#        filter(!is.na(pm10) &  !is.na(wd))
     plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
-        filter(!is.na(pm10) &  !is.na(wd))
+        filter(!is.na(pm10))
+    wd_missing <- plot_data[is.na(plot_data$wd), 1:2]
+    wind_fill_query <- paste0("SELECT i.deployment, m.datetime, ",
+                              "COALESCE(m.wd_6m, m.wdv_2d) as WD ",
+                              "FROM met.met_1hour m JOIN info.deployments i ",
+                              "ON m.deployment_id=i.deployment_id ",
+                              "WHERE i.deployment IN ('",
+                              paste(unique(wd_missing$deployment), 
+                                    collapse="', '"), "') ", 
+                              "AND (m.datetime - '1 second'::interval)::date=", 
+                              "'", i, "'::date;")
+    wd_fill <- query_salton(wind_fill_query)
+    plot_data <- plot_data %>% 
+        left_join(wd_fill, by=c("deployment", "datetime")) %>%
+        mutate(wd=coalesce(wd.x, wd.y)) %>% select(-wd.x, -wd.y)
     event_list[[i]]$map <- event_plot(loc_df, plot_data, background)
     event_list[[i]]$map_img <- paste0(tempfile(), ".png")
     png(filename=event_list[[i]]$map_img, width=8, height=3, units="in", 
