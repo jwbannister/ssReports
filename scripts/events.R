@@ -172,6 +172,10 @@ for (i in names(event_list)){
     plot_data <- plot_data %>% 
         left_join(wd_fill, by=c("deployment", "datetime")) %>%
         mutate(wd=coalesce(wd.x, wd.y)) %>% select(-wd.x, -wd.y)
+    # filter out Naval Test Base for August 2016 - bad wind data
+    if (year(start_date)==2016 & month(start_date)<11){
+        plot_data <- filter(plot_data, deployment!='Naval Test Base')
+    }
     event_list[[i]]$map <- event_plot(loc_df, plot_data, background)
     event_list[[i]]$map_img <- paste0(tempfile(), ".png")
     png(filename=event_list[[i]]$map_img, width=8, height=3, units="in", 

@@ -11,6 +11,7 @@ library(pander)
 panderOptions('knitr.auto.asis', FALSE)
 panderOptions('table.alignment.rownames', 'left')
 panderOptions('keep.line.breaks', TRUE)
+if (report_span>1) report_header <- report_header_multi
 ```
 
 ```{r load, include=F}
@@ -78,21 +79,36 @@ cat("\n## Site Exceedance Days\n")
 cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
 events[[3]] <- tag_value(events[[3]], "a", 150)
 events[[4]] <- tag_value(events[[4]], "a", 35)
-cat("<p style=\"font-size: 10pt;\">")
-pandoc.table(select(events, 1:4), split.table=Inf)
-cat("</p>")
-#cat("<div style=\"font-size: 10pt;\">")
+splits <- ceiling(nrow(events)/33)
+split_events <- vector(mode="list", length=splits)
+for (i in 1:splits){
+    if (i>1){
+        cat("<p style=\"page-break-after:always;\"></p> \n")
+        report_header(start_date, end_date, report_date)
+    }
+    split_events[[i]] <- events[((35*(i-1))+1):(35*i), ]
+    split_events[[i]] <- split_events[[i]][complete.cases(split_events[[i]]), ]
+    cat("<p style=\"font-size: 10pt;\">")
+    pandoc.table(select(split_events[[i]], 1:4), split.table=Inf)
+    cat("</p>")
+}
 gdrive_comments <- system(paste0(getwd(), "/gdrive list ", 
-                  "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents\""), intern=T)  
+                  "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents ",
+                  "and mimeType != 'application/vnd.google-apps.folder'\""), 
+                          intern=T)  
 cmnt_fl <- tempfile()
 write.table(gdrive_comments, file=cmnt_fl, quote=F, row.names=F, col.names=F)
 comment_list <- read.table(cmnt_fl, header=F, skip=2)
-comment_file <- paste0("comments_", month(start_date), year(start_date), ".txt")
+if (report_span>1){
+    comment_file <- paste0(report_span, "_month_comments.txt")
+} else{
+    comment_file <- paste0("comments_", month(start_date), year(start_date), ".txt")
+}
     if (comment_file %in% comment_list[ , 2]){
         index <- which(comment_list[ , 2]==comment_file)
         system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
                       comment_list[ , 1][index]))
-        if ((nrow(events) + 
+        if ((nrow(split_events[[splits]]) + 
              length(readLines(paste0(tempdir(), "/", comment_file)))) > 33){
             cat("<p style=\"page-break-after:always;\"></p> \n")
             report_header(start_date, end_date, report_date)
