@@ -10,7 +10,7 @@ file.arg.name <- "--file="
 script.name <- sub(file.arg.name, "", cl_args[grep(file.arg.name, cl_args)])
 if (length(script.name)>0) setwd(dirname(script.name))
 
-report_span <- 6
+report_span <- ifelse(is.na(cl_args[7]), 1, as.numeric(cl_args[7]))
 start_date <- mdy(cl_args[6]) # date to start reporting period
 end_date <- start_date %m+% months(report_span) %m-% days(1)
 report_date <- format(Sys.Date(), "%m-%d-%Y")

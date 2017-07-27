@@ -85,8 +85,10 @@ for (i in 1:splits){
     if (i>1){
         cat("<p style=\"page-break-after:always;\"></p> \n")
         report_header(start_date, end_date, report_date)
+        cat("\n## Site Exceedance Days Continued\n")
+        cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
     }
-    split_events[[i]] <- events[((35*(i-1))+1):(35*i), ]
+    split_events[[i]] <- events[((33*(i-1))+1):(33*i), ]
     split_events[[i]] <- split_events[[i]][complete.cases(split_events[[i]]), ]
     cat("<p style=\"font-size: 10pt;\">")
     pandoc.table(select(split_events[[i]], 1:4), split.table=Inf)
@@ -94,31 +96,50 @@ for (i in 1:splits){
 }
 gdrive_comments <- system(paste0(getwd(), "/gdrive list ", 
                   "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents ",
-                  "and mimeType != 'application/vnd.google-apps.folder'\""), 
-                          intern=T)  
+                  "and mimeType != 'application/vnd.google-apps.folder'\" ", 
+                  "-m 10000"), intern=T)  
 cmnt_fl <- tempfile()
 write.table(gdrive_comments, file=cmnt_fl, quote=F, row.names=F, col.names=F)
-comment_list <- read.table(cmnt_fl, header=F, skip=2)
+comment_list <- read.fwf(file=cmnt_fl, widths=c(29, 29), strip.white=T)
 if (report_span>1){
     comment_file <- paste0(report_span, "_month_comments.txt")
 } else{
     comment_file <- paste0("comments_", month(start_date), year(start_date), ".txt")
 }
-    if (comment_file %in% comment_list[ , 2]){
-        index <- which(comment_list[ , 2]==comment_file)
-        system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
-                      comment_list[ , 1][index]))
-        if ((nrow(split_events[[splits]]) + 
-             length(readLines(paste0(tempdir(), "/", comment_file)))) > 33){
-            cat("<p style=\"page-break-after:always;\"></p> \n")
-            report_header(start_date, end_date, report_date)
-                 }
+if (comment_file %in% comment_list[ , 2]){
+    index <- which(comment_list[ , 2]==comment_file)
+    system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
+                  comment_list[ , 1][index]))
+    comment_lines <- readLines(paste0(tempdir(), "/", comment_file)) 
+    comment_length <- length(comment_lines)
+    if ((nrow(split_events[[splits]]) + comment_length)<33){
         cat(" \n\n## Comments \n")
-        for (i in 1:length(readLines(paste0(tempdir(), "/", comment_file)))){
-            cat(" \n", readLines(paste0(tempdir(), "/", comment_file))[i], 
-                " \n", sep="")
+        for (j in 1:length(comment_lines)){
+            cat(" \n", comment_lines[j], " \n", sep="")
+        }
+    } else{
+        split_comments <- list()
+        split_comments[[1]] <- comment_lines[1:(32-nrow(split_events[[splits]]))]
+        comment_splits <- ceiling((comment_length-length(split_comments[[1]]))/33)
+        for (i in 2:(comment_splits+1)){
+            split_comments[[i]] <- comment_lines[(length(split_comments[[i-1]])+1):
+                                                 (length(split_comments[[i-1]])+33)]
+            split_comments[[i]] <- split_comments[[i]][!is.na(split_comments[[i]])]
+        }
+        for (k in 1:(comment_splits+1)){
+            if (k==1){
+                cat(" \n\n## Comments \n")
+            } else{
+                cat("<p style=\"page-break-after:always;\"></p> \n")
+                report_header(start_date, end_date, report_date)
+                cat("\n## Comments Continued\n")
+            }
+            for (j in 1:length(split_comments[[i]])){
+                cat(" \n", split_comments[[i]][j], " \n", sep="")
+            }
         }
     }
+}
 #cat("</div>")
 cat("<p style=\"page-break-after:always;\"></p> \n")
 ```

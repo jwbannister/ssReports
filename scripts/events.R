@@ -159,19 +159,21 @@ for (i in names(event_list)){
     plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
         filter(!is.na(pm10))
     wd_missing <- plot_data[is.na(plot_data$wd), 1:2]
-    wind_fill_query <- paste0("SELECT i.deployment, m.datetime, ",
-                              "COALESCE(m.wd_6m, m.wdv_2d) as WD ",
-                              "FROM met.met_1hour m JOIN info.deployments i ",
-                              "ON m.deployment_id=i.deployment_id ",
-                              "WHERE i.deployment IN ('",
-                              paste(unique(wd_missing$deployment), 
-                                    collapse="', '"), "') ", 
-                              "AND (m.datetime - '1 second'::interval)::date=", 
-                              "'", i, "'::date;")
-    wd_fill <- query_salton(wind_fill_query)
-    plot_data <- plot_data %>% 
-        left_join(wd_fill, by=c("deployment", "datetime")) %>%
-        mutate(wd=coalesce(wd.x, wd.y)) %>% select(-wd.x, -wd.y)
+    if (nrow(wd_missing)>0){
+        wind_fill_query <- paste0("SELECT i.deployment, m.datetime, ",
+                                  "COALESCE(m.wd_6m, m.wdv_2d) as WD ",
+                                  "FROM met.met_1hour m JOIN info.deployments i ",
+                                  "ON m.deployment_id=i.deployment_id ",
+                                  "WHERE i.deployment IN ('",
+                                  paste(unique(wd_missing$deployment), 
+                                        collapse="', '"), "') ", 
+                                  "AND (m.datetime - '1 second'::interval)::date=", 
+                                  "'", i, "'::date;")
+        wd_fill <- query_salton(wind_fill_query)
+        plot_data <- plot_data %>% 
+            left_join(wd_fill, by=c("deployment", "datetime")) %>%
+            mutate(wd=coalesce(wd.x, wd.y)) %>% select(-wd.x, -wd.y)
+    }
     # filter out Naval Test Base for August 2016 - bad wind data
     if (year(start_date)==2016 & month(start_date)<11){
         plot_data <- filter(plot_data, deployment!='Naval Test Base')
