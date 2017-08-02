@@ -134,8 +134,8 @@ if (comment_file %in% comment_list[ , 2]){
                 report_header(start_date, end_date, report_date)
                 cat("\n## Comments Continued\n")
             }
-            for (j in 1:length(split_comments[[i]])){
-                cat(" \n", split_comments[[i]][j], " \n", sep="")
+            for (j in 1:length(split_comments[[k]])){
+                cat(" \n", split_comments[[k]][j], " \n", sep="")
             }
         }
     }
