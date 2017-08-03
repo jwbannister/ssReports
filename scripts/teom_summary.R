@@ -23,10 +23,12 @@ for(i in 1:5){
                                        "*100, ", 1, ")"),
                    monthly.mean=paste0("round(mean(", col_ind, ", na.rm=T), ", 
                                        round_ind, ")"), 
-                   max.hour=paste0("round(max(", col_ind, ", na.rm=T), ", 
-                                   round_ind, ")"),
-                   min.hour=paste0("round(min(", col_ind, ", na.rm=T), ", 
-                                   round_ind, ")" ))
+                   max.hour=paste0("ifelse(sum(!is.na(", col_ind, "))>0, 
+                                   round(max(", col_ind, ", na.rm=T), ", 
+                                         round_ind, "), NA)"),
+                   min.hour=paste0("ifelse(sum(!is.na(", col_ind, "))>0, 
+                                   round(min(", col_ind, ", na.rm=T), ", 
+                                         round_ind, "), NA)"))
     month_df[is.na(month_df)] <- "-"
     month_df$data.capture <- paste0(month_df$data.capture, "%")
     month_tbl <- as.data.frame(t(month_df), col.names=pm10_month$deployment, 

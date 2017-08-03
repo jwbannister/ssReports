@@ -21,8 +21,10 @@ temp <- met_clean %>% filter(deployment==i) %>%
     group_by(measure) %>%
     summarize(data.capture=round(sum(!is.na(value))/data_hours, 2),
               monthly.mean=round(mean(value, na.rm=T), 1), 
-              max.hour=round(max(value, na.rm=T), 1), 
-              min.hour=round(min(value, na.rm=T), 1)) 
+              max.hour=ifelse(sum(!is.na(value))>0, 
+                              round(max(value, na.rm=T), 1), NA), 
+              min.hour=ifelse(sum(!is.na(value))>0, 
+                              round(min(value, na.rm=T), 1), NA))
 temp[is.na(temp)] <- "-"
 met_summary[[i]] <- as.data.frame(t(temp), optional=T)[-1, ]
 colnames(met_summary[[i]]) <- temp$measure
