@@ -33,9 +33,9 @@ pm_summary <- pm_clean %>% select(-teom_bp, -teom_at, -teom_rh) %>%
               valid.hours.pm10 = sum(!is.na(pm10)), 
               valid.hours.pm25 = sum(!is.na(pm25)))
 pm_summary$valid.pm10 <- sapply(pm_summary$valid.hours.pm10, 
-                                function(x) ifelse(x>=18, T, F))
+                                function(x) if_else(x>=18, T, F))
 pm_summary$valid.pm25 <- sapply(pm_summary$valid.hours.pm25, 
-                                function(x) ifelse(x>=18, T, F))
+                                function(x) if_else(x>=18, T, F))
 for (i in 1:nrow(pm_summary)){
     if (!pm_summary$valid.pm10[i] | is.nan(pm_summary$daily.pm10.avg[i])){
         pm_summary$daily.pm10.avg[i] <- NA

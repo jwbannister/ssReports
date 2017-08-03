@@ -85,7 +85,7 @@ select(deployment, start.date, start.hour, end.date, end.hour, flag,
        flag_note, reviewed, invalidate) %>% filter(invalidate)
 flag_df$flag <- 
     sapply(flag_df$flag, 
-           function(x) ifelse(x %in% c("Site Visit", "TEOM Op Mode Error", 
+           function(x) if_else(x %in% c("Site Visit", "TEOM Op Mode Error", 
                                         "TEOM Status Error", 
                                         "Excessive Negative PM10 Concentration", 
                                         "Missing TEOM Data"), x, 
