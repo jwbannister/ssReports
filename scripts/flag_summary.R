@@ -8,7 +8,7 @@ flag_df$end.datetime <- as.POSIXct(paste0(flag_df$end.date, " ",
                                             flag_df$end.hour)) 
 flag_df$end.datetime <- 
     sapply(flag_df$end.datetime, 
-           function(x) if_else(as.Date(x %m-% seconds(1))>end_date, 
+           function(x) ifelse(as.Date(x %m-% seconds(1))>end_date, 
                               as.POSIXct(paste(end_date, "23:59:59")), x))
 flag_df$end.datetime <- as.POSIXct(flag_df$end.datetime, origin='1970-01-01')
 
