@@ -160,9 +160,6 @@ for (i in 1:length(event_list)){
     cat(paste0("<p>![](", event_list[[i]]$time_img, ")</p>"))
     cat("<hr class=\"style2\">")
     cat(paste0("<p>![](", event_list[[i]]$photo_img, ")</p>"))
-    if (nrow(filter(select(events, 1:4), Date==names(event_list)[i])) < 3){
-        cat("<hr class=\"style2\">")
-    }
     cat("<center>")
     print(event_list[[i]]$map)
     cat("</center>")

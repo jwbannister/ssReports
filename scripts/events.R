@@ -12,11 +12,11 @@ pm10_cutoff <- 150
 pm25_cutoff <- 35
 
 # categorize sites into zones
-zones <- data.frame(deployment=c("Torres-Martinez", "Salton Sea Park", 
+zones <- data.frame(deployment=c("Torres Martinez", "Salton Sea Park", 
                                  "Bombay Beach", "Sonny Bono", 
                                  "Naval Test Base", "Salton City"), 
                     zone=c("N", "N", "E", "E", "W", "W"), 
-                    camera=c(rep("Torres-Martinez", 2), 
+                    camera=c(rep("Torres Martinez", 2), 
                              rep("1003", 2), 
                              rep("Salton City", 2)))
 
@@ -180,7 +180,8 @@ for (i in names(event_list)){
     }
     event_list[[i]]$map <- event_plot(loc_df, plot_data, background)
     event_list[[i]]$map_img <- paste0(tempfile(), ".png")
-    png(filename=event_list[[i]]$map_img, width=8, height=3, units="in", 
+    ht <- ifelse(nrow(filter(events, date==i))>3, 2.5, 3)
+    png(filename=event_list[[i]]$map_img, width=8, height=ht, units="in", 
         res=300)
     print(event_list[[i]]$map)
     dev.off()
