@@ -137,5 +137,3 @@ met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
     left_join(zns, by="deployment")
 attributes(met_5min_df$datetime)$tzone <- "America/Los_Angeles"
                  
-save(pm_df, met_df, flag_df, loc_df, image_df, met_5min_df, 
-     file="~/code/ssReports/data/load.RData")
