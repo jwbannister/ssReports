@@ -5,8 +5,8 @@ css: style.css
 ---
 
 ```{r setup, include=FALSE}
+load_all("~/code/aiRsci")
 load_all("~/code/ssReports")
-load_all("~/code/Roses")
 library(pander)
 panderOptions('knitr.auto.asis', FALSE)
 panderOptions('table.alignment.rownames', 'left')
@@ -112,22 +112,23 @@ if (comment_file %in% comment_list[ , 2]){
                   comment_list[ , 1][index]))
     comment_lines <- readLines(paste0(tempdir(), "/", comment_file)) 
     comment_length <- length(comment_lines)
-    if ((nrow(split_events[[splits]]) + comment_length)<30){
+    if ((nrow(split_events[[splits]]) + comment_length)<32){
         cat(" \n\n## Comments \n")
         for (j in 1:length(comment_lines)){
             cat(" \n", comment_lines[j], " \n", sep="")
         }
     } else{
         split_comments <- list()
-        split_comments[[1]] <- comment_lines[1:(29-nrow(split_events[[splits]]))]
+        split_comments[[1]] <- comment_lines[1:(31-nrow(split_events[[splits]]))]
         comment_splits <- 
-        ceiling((comment_length-length(split_comments[[1]]))/30)
-        for (i in 2:(comment_splits+1)){
-            split_comments[[i]] <- comment_lines[(length(split_comments[[i-1]])+1):
-                                                 (length(split_comments[[i-1]])+30)]
+        ceiling((comment_length-length(split_comments[[1]]))/32) + 1
+        marker <- length(split_comments[[1]])
+        for (i in 2:(comment_splits)){
+            split_comments[[i]] <- comment_lines[(marker+1):(marker+32)]
             split_comments[[i]] <- split_comments[[i]][!is.na(split_comments[[i]])]
+            marker <- marker + length(split_comments[[i]])
         }
-        for (k in 1:(comment_splits+1)){
+        for (k in 1:(comment_splits)){
             if (k==1){
                 cat(" \n\n## Comments \n")
             } else{

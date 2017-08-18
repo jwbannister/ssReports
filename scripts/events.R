@@ -1,5 +1,5 @@
 load_all("~/code/ssReports")
-load_all("~/code/Roses")
+load_all("~/code/aiRsci")
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
@@ -116,7 +116,7 @@ for (i in names(event_list)){
         }
         if (length(image.key)!=0){
             image.file <- tempfile()
-            S3_bucket_access(image.key, image.file)
+            S3_bucket_access(bucket="saltonimages", key=image.key, file=image.file)
             img <- jpeg::readJPEG(image.file)
             prelim.grob <- grid::rasterGrob(img, interpolate=T)
             p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
