@@ -6,7 +6,8 @@ S3_bucket_access <- function(key, file){
 }
 
 report_header <- function(start_date, end_date, report_date){
-    cat("<img style=\"float: right;\" src=\"/home/john/code/ssReports/data/logo.png\"> \n")
+    logo <- path.expand("~/code/ssReports/data/logo.png")
+    cat("<img style=\"float: right;\" src=\"", logo, "\"> \n", sep="")
     cat(" \n# ", as.character(month(start_date, label=T, abbr=F)), " ", 
         year(start_date), " Monitoring Summary \n")
     cat(" \n## IID Air Quality Program\n")
@@ -25,7 +26,8 @@ tag_value <- function(val, css_tag, threshold){
 
     
 report_header_multi <- function(start_date, end_date, report_date){
-    cat("<img style=\"float: right;\" src=\"/home/john/code/ssReports/data/logo.png\"> \n")
+    logo <- path.expand("~/code/ssReports/data/logo.png")
+    cat("<img style=\"float: right;\" src=\"", logo, "\"> \n", sep="")
     cat(" \n# ", as.character(month(start_date, label=T, abbr=F)), " ", 
         year(start_date), " - ", as.character(month(end_date, label=T, abbr=F)), 
         " ", year(end_date), " Monitoring Summary \n")
