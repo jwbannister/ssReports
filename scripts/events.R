@@ -161,7 +161,10 @@ for (i in names(event_list)){
     wd_missing <- plot_data[is.na(plot_data$wd), 1:2]
     if (nrow(wd_missing)>0){
         wind_fill_query <- paste0("SELECT i.deployment, m.datetime, ",
-                                  "COALESCE(m.wd_6m, m.wdv_2d) as WD ",
+                                  "m.wdv_2d as wd, ",
+                                  "flags.is_invalid(m.deployment_id, 136, ", 
+                                  "m.datetime - '1 hour'::interval, m.datetime) ", 
+                                  "AS invalid_wd ",
                                   "FROM met.met_1hour m JOIN info.deployments i ",
                                   "ON m.deployment_id=i.deployment_id ",
                                   "WHERE i.deployment IN ('",
@@ -169,7 +172,8 @@ for (i in names(event_list)){
                                         collapse="', '"), "') ", 
                                   "AND (m.datetime - '1 second'::interval)::date=", 
                                   "'", i, "'::date;")
-        wd_fill <- query_salton(wind_fill_query)
+        wd_fill <- query_salton(wind_fill_query) %>%
+            filter(!invalid_wd)
         plot_data <- plot_data %>% 
             left_join(wd_fill, by=c("deployment", "datetime")) %>%
             mutate(wd=coalesce(wd.x, wd.y)) %>% select(-wd.x, -wd.y)
