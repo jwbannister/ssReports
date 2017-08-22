@@ -51,7 +51,14 @@ events <- pm_summary %>% ungroup() %>%
     arrange(date)
 
 # get background for use in dust rose plot
-background <- plot_salton_background()
+ext <- sp::SpatialPointsDataFrame(coords=data.frame(x=c(-116.25, -115.4), 
+                                             y=c(33.015, 33.66)), 
+                            data=data.frame(id=1:2), 
+                            proj4string=sp::CRS("+proj=longlat +datum=WGS84"))
+ext_utm <- sp::spTransform(ext, sp::CRS("+proj=utm +zone=11N +datum=NAD83"))
+background <- photo_background(ext_utm@coords[1], ext_utm@coords[2], 
+                               ext_utm@coords[3], ext_utm@coords[4], 
+                               zone="11N")
 # set coordinates for determining daylight hours
 salton_sea <- matrix(c(-115.8434, 33.3286), nrow=1) 
 
