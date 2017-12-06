@@ -1,5 +1,3 @@
-load_all("~/code/ssReports")
-load_all("~/code/aiRsci")
 library(tidyverse)
 library(lubridate)
 library(ggplot2)

@@ -1,4 +1,3 @@
-load_all()
 library(lubridate)
 library(tidyverse)
 

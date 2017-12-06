@@ -5,8 +5,9 @@ css: style.css
 ---
 
 ```{r setup, include=FALSE}
-load_all("~/code/aiRsci")
-load_all("~/code/ssReports")
+airsci_loc <- Sys.getenv("R_AIRSCI")
+devtools::load_all(airsci_loc)
+load_all()
 library(pander)
 panderOptions('knitr.auto.asis', FALSE)
 panderOptions('table.alignment.rownames', 'left')
@@ -100,7 +101,8 @@ gdrive_comments <- system(paste0(getwd(), "/gdrive list ",
                   "-m 10000"), intern=T)  
 cmnt_fl <- tempfile()
 write.table(gdrive_comments, file=cmnt_fl, quote=F, row.names=F, col.names=F)
-comment_list <- read.fwf(file=cmnt_fl, widths=c(29, 29), strip.white=T)
+comment_list <- read.table(file=cmnt_fl, sep="", header=F, na.strings="", 
+                           skip=1)
 if (report_span>1){
     comment_file <- paste0(report_span, "_month_comments.txt")
 } else{

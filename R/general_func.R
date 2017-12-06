@@ -1,9 +1,3 @@
-S3_bucket_access <- function(key, file){
-    aws_access <- Sys.getenv("AWSID_AIRSCI")
-    aws_secret <- Sys.getenv("AWSKEY_AIRSCI")
-    RS3::S3_connect(aws_access, aws_secret, hostname="s3-us-west-2.amazonaws.com")
-    RS3::S3_get_object("saltonimages", key, file)
-}
 
 report_header <- function(start_date, end_date, report_date){
     logo <- path.expand("~/code/ssReports/data/logo.png")

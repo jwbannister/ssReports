@@ -1,32 +1,27 @@
-load_all()
 library(tidyverse)
 library(lubridate)
 library(rgdal)
 
 # pull TEOM data
-query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10, t.pm25, ", 
-                 "t.teom_bp, t.teom_at, t.teom_rh, ",
-                 "flags.is_tf_invalid(t.deployment_id, 144, 
-                 t.datetime - '1 hour'::interval, t.datetime) ", 
+query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10_stp AS pm10, ", 
+                 "t.pm25, t.teom_bp, t.teom_at, t.teom_rh, ",
+                 "flags.field_is_invalid(t.deployment_id, 145, t.datetime) ",
                  "AS invalid_pm10, ",
-                 "flags.is_tf_invalid(t.deployment_id, 146, 
-                 t.datetime - '1 hour'::interval, t.datetime) ", 
+                 "flags.field_is_invalid(t.deployment_id, 146, t.datetime) ",
                  "AS invalid_pm25, ",
-                 "flags.is_tf_invalid(t.deployment_id, 320, 
-                 t.datetime - '1 hour'::interval, t.datetime) ", 
+                 "flags.field_is_invalid(t.deployment_id, 320, t.datetime) ",
                  "AS invalid_bp, ",
-                 "flags.is_tf_invalid(t.deployment_id, 150, 
-                 t.datetime - '1 hour'::interval, t.datetime) ", 
+                 "flags.field_is_invalid(t.deployment_id, 150, t.datetime) ",
                  "AS invalid_at, ",
-                 "flags.is_tf_invalid(t.deployment_id, 151, 
-                 t.datetime - '1 hour'::interval, t.datetime) ", 
+                 "flags.field_is_invalid(t.deployment_id, 151, t.datetime) ",
                  "AS invalid_rh ",
                  "FROM teom.pm_1hour t JOIN info.deployments i ",
                  "ON t.deployment_id = i.deployment_id ", 
-                 "WHERE (DATE_TRUNC('minute', datetime) - '1 second'::interval)::date ",
+                 "WHERE (DATE_TRUNC('minute', datetime) - ", 
+                 "'1 second'::interval)::date ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
-pm_df <- query_salton(query1)
+pm_df <- query_db("saltonsea", query1)
 attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
@@ -34,36 +29,30 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "COALESCE(m.ws_10m, m.ws_sonic_2d) AS ws, ", 
                  "COALESCE(m.wd_10m, m.wd_sonic) AS wd, m.net_rad, ", 
                  "m.at_2m, m.rh_2m, m.delta_temp_2m, m.delta_temp_10m, ", 
-                 "flags.is_tf_invalid(m.deployment_id, 114, 
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 114, m.datetime) ",
                  "AS invalid_ws, ",
-                 "flags.is_tf_invalid(m.deployment_id, 298, 
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 298, m.datetime) ",
                  "AS invalid_wd, ",
-                 "flags.is_tf_invalid(m.deployment_id, 118,
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 118, m.datetime) ",
                  "AS invalid_rad, ",
-                 "flags.is_tf_invalid(m.deployment_id, 119,
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 119, m.datetime) ",
                  "AS invalid_at, ",
-                 "flags.is_tf_invalid(m.deployment_id, 120,
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 120, m.datetime) ",
                  "AS invalid_rh, ",
-                 "flags.is_tf_invalid(m.deployment_id, 115,
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 115, m.datetime) ",
                  "AS invalid_d2, ",
-                 "flags.is_tf_invalid(m.deployment_id, 116,
-                 m.datetime - '1 hour'::interval, m.datetime) ", 
+                 "flags.field_is_invalid(m.deployment_id, 116, m.datetime) ",
                  "AS invalid_d10 ",
                  "FROM met.met_1hour m JOIN info.deployments i ",
                  "ON m.deployment_id = i.deployment_id ", 
-                 "WHERE (DATE_TRUNC('minute', datetime) - '1 second'::interval)::date ",
+                 "WHERE (DATE_TRUNC('minute', datetime) - ", 
+                 "'1 second'::interval)::date ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date ",
                  "AND i.deployment IN ('Bombay Beach', 'Sonny Bono', ", 
                  "'Torres Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
-met_df <- query_salton(query1)
+met_df <- query_db("saltonsea", query1)
 attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull and summarize flag data
@@ -73,7 +62,7 @@ query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ",
                  "ON f.flag_id = ff.flag_id ", 
                  "JOIN info.deployments i ",
                  "ON f.deployment_id = i.deployment_id ") 
-flag_pull <- query_salton(query1)
+flag_pull <- query_db("saltonsea", query1)
 flag_pull$start.date <- substr(flag_pull$flagged_period, 3, 12)
 flag_pull$start.hour <- substr(flag_pull$flagged_period, 14, 21)
 flag_pull$end.date <- substr(flag_pull$flagged_period, 25, 34)
@@ -100,7 +89,7 @@ data_hours <- length(hour_seq)
 # pull deployment locations
 query1 <- paste0("SELECT deployment, lat_dd, lon_dd ", 
                  "FROM info.deployments")
-loc_pull <- query_salton(query1)
+loc_pull <- query_db("saltonsea", query1)
 loc_df <- loc_pull %>% filter(deployment %in% unique(pm_df$deployment))
 longlatcoord <- SpatialPoints(cbind(loc_df$lon_dd, loc_df$lat_dd), 
                               proj4string=CRS("+proj=longlat"))
@@ -120,7 +109,7 @@ query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_u
                  "AND (datetime - '1 second'::interval)::date ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
-image_df <- query_salton(query1)
+image_df <- query_db("saltonsea", query1)
 
 # pull 5 minute wind data
 query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_2m AS ws ", 
@@ -130,7 +119,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_2m AS ws ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date ",
                  "AND i.deployment IN ('1001', '1004', '1102')")
-met_5min_pull <- query_salton(query1)
+met_5min_pull <- query_db("saltonsea", query1)
 zns <- data.frame(deployment=c("1001", "1102", "1004"), 
                   zone=c("N", "W", "E"))
 met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
