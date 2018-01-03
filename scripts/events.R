@@ -176,7 +176,7 @@ for (i in names(event_list)){
                                         collapse="', '"), "') ", 
                                   "AND (m.datetime - '1 second'::interval)::date=", 
                                   "'", i, "'::date;")
-        wd_fill <- query_salton(wind_fill_query) %>%
+        wd_fill <- query_db("saltonsea", wind_fill_query) %>%
             filter(!invalid_wd)
         plot_data <- plot_data %>% 
             left_join(wd_fill, by=c("deployment", "datetime")) %>%
