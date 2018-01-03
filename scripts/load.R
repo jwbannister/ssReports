@@ -27,7 +27,7 @@ attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 # pull met data
 query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "COALESCE(m.ws_10m, m.ws_sonic_2d) AS ws, ", 
-                 "COALESCE(m.wd_10m, m.wd_sonic) AS wd, m.net_rad, ", 
+                 "COALESCE(m.wd_10m, m.wd_sonic) AS wd, m.solar_rad, ", 
                  "m.at_2m, m.rh_2m, m.delta_temp_2m, m.delta_temp_10m, ", 
                  "flags.field_is_invalid(m.deployment_id, 114, m.datetime) ",
                  "AS invalid_ws, ",

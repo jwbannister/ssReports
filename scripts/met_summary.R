@@ -28,7 +28,7 @@ temp[is.na(temp)] <- "-"
 met_summary[[i]] <- as.data.frame(t(temp), optional=T)[-1, ]
 colnames(met_summary[[i]]) <- temp$measure
 met_summary[[i]] <- met_summary[[i]] %>%
-    select(ws, wd, at_2m, rh_2m, delta_temp_2m, delta_temp_10m, net_rad)
+    select(ws, wd, at_2m, rh_2m, delta_temp_2m, delta_temp_10m, solar_rad)
 met_summary[[i]][1, ] <- paste0(as.numeric(met_summary[[i]][1 , ])*100, "%")
 met_summary[[i]]$wd[2:4] <- "-"
 }
