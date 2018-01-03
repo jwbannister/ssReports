@@ -43,7 +43,7 @@ col_names <- c("10m Wind\\\nSpeed (m/s)", "10m Wind\\\nDirection (deg)",
                "Ambient\\\nTemp.(<sup>o</sup>C)", "Relative\\\nHumidity (%)", 
                "Delta Temp.\\\n2m (<sup>o</sup>C)", 
                "Delta Temp.\\\n10m (<sup>o</sup>C)", 
-               "Net\\\nRadiation (W/m<sup>2</sup>)")
+               "Solar\\\nRadiation (W/m<sup>2</sup>)")
 for (i in 1:length(met_summary)){
     rownames(met_summary[[i]]) <- row_names
     colnames(met_summary[[i]]) <- col_names
