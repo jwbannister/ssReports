@@ -22,7 +22,7 @@ query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10_stp AS pm10, ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
 pm_df <- query_db("saltonsea", query1)
-attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
+#attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
 query1 <- paste0("SELECT i.deployment, m.datetime, ",
@@ -53,7 +53,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "'Torres Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
 met_df <- query_db("saltonsea", query1)
-attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
+#attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull and summarize flag data
 query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ", 
@@ -124,5 +124,5 @@ zns <- data.frame(deployment=c("1001", "1102", "1004"),
                   zone=c("N", "W", "E"))
 met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
     left_join(zns, by="deployment")
-attributes(met_5min_df$datetime)$tzone <- "America/Los_Angeles"
+#attributes(met_5min_df$datetime)$tzone <- "America/Los_Angeles"
                  
