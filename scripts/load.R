@@ -3,7 +3,9 @@ library(lubridate)
 library(rgdal)
 
 # pull TEOM data
-query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10_stp AS pm10, ", 
+query1 <- paste0("SELECT i.deployment, ",
+                 "t.datetime::timestamp AT TIME ZONE 'America/Los_Angeles' AS datetime, ", 
+                 "t.pm10_stp AS pm10, ", 
                  "t.pm25, t.teom_bp, t.teom_at, t.teom_rh, ",
                  "flags.field_is_invalid(t.deployment_id, 145, t.datetime) ",
                  "AS invalid_pm10, ",
@@ -22,10 +24,11 @@ query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10_stp AS pm10, ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
 pm_df <- query_db("saltonsea", query1)
-#attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
+attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
-query1 <- paste0("SELECT i.deployment, m.datetime, ",
+query1 <- paste0("SELECT i.deployment, ", 
+                 "m.datetime::timestamp AT TIME ZONE 'America/Los_Angeles' as datetime, ",
                  "COALESCE(m.ws_10m, m.ws_sonic_2d) AS ws, ", 
                  "COALESCE(m.wd_10m, m.wd_sonic) AS wd, m.solar_rad, ", 
                  "m.at_2m, m.rh_2m, m.delta_temp_2m, m.delta_temp_10m, ", 
@@ -53,7 +56,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "'Torres Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
 met_df <- query_db("saltonsea", query1)
-#attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
+attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull and summarize flag data
 query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ", 
@@ -84,8 +87,10 @@ flag_df$flag <-
                                "Other Invalidation"))
 
 # build full list of hours in period to calculate data capture ratio
-hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00")), 
-                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00")), 
+hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00"), 
+                           tz='America/Los_Angeles'), 
+                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00"), 
+                           tz='America/Los_Angeles'), 
                 by="hour")
 data_hours <- length(hour_seq)
 
