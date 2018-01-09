@@ -22,7 +22,7 @@ query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10_stp AS pm10, ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
 pm_df <- query_db("saltonsea", query1)
-attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
+#attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
 query1 <- paste0("SELECT i.deployment, m.datetime, ",
@@ -53,7 +53,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "'Torres Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
 met_df <- query_db("saltonsea", query1)
-attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
+#attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull and summarize flag data
 query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ", 
@@ -84,10 +84,8 @@ flag_df$flag <-
                                "Other Invalidation"))
 
 # build full list of hours in period to calculate data capture ratio
-hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00"), 
-                           tz="America/Los_Angeles"),
-                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00"), 
-                           tz="America/Los_Angeles"), 
+hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00")), 
+                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00")), 
                 by="hour")
 data_hours <- length(hour_seq)
 
