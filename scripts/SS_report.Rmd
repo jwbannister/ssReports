@@ -7,7 +7,7 @@ css: style.css
 ```{r setup, include=FALSE}
 airsci_loc <- Sys.getenv("R_AIRSCI")
 devtools::load_all(airsci_loc)
-load_all()
+load_all(here::here())
 library(pander)
 panderOptions('knitr.auto.asis', FALSE)
 panderOptions('table.alignment.rownames', 'left')

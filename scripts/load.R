@@ -22,7 +22,7 @@ query1 <- paste0("SELECT i.deployment, t.datetime, t.pm10_stp AS pm10, ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
 pm_df <- query_db("saltonsea", query1)
-#attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
+attributes(pm_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull met data
 query1 <- paste0("SELECT i.deployment, m.datetime, ",
@@ -53,7 +53,7 @@ query1 <- paste0("SELECT i.deployment, m.datetime, ",
                  "'Torres Martinez', 'Naval Test Base', ",
                  "'Salton City', 'Salton Sea Park')")
 met_df <- query_db("saltonsea", query1)
-#attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
+attributes(met_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull and summarize flag data
 query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ", 
@@ -69,6 +69,9 @@ flag_pull$end.date <- substr(flag_pull$flagged_period, 25, 34)
 flag_pull$end.hour <- substr(flag_pull$flagged_period, 36, 43)
 flag_df <- flag_pull %>% filter(between(as.Date(start.date), 
                                         as.Date(start_date), 
+                                        as.Date(end_date)) | 
+                                between(as.Date(end.date), 
+                                        as.Date(start_date), 
                                         as.Date(end_date))) %>%
 select(deployment, start.date, start.hour, end.date, end.hour, flag, 
        flag_note, reviewed, invalidate) %>% filter(invalidate)
@@ -81,8 +84,10 @@ flag_df$flag <-
                                "Other Invalidation"))
 
 # build full list of hours in period to calculate data capture ratio
-hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00")),
-                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00")), 
+hour_seq <- seq(as.POSIXct(paste0(start_date, " 01:00:00"), 
+                           tz="America/Los_Angeles"),
+                as.POSIXct(paste0(end_date %m+% days(1), " 00:00:00"), 
+                           tz="America/Los_Angeles"), 
                 by="hour")
 data_hours <- length(hour_seq)
 
@@ -110,6 +115,7 @@ query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_u
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date;")
 image_df <- query_db("saltonsea", query1)
+attributes(image_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull 5 minute wind data
 query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_2m AS ws ", 
@@ -124,5 +130,5 @@ zns <- data.frame(deployment=c("1001", "1102", "1004"),
                   zone=c("N", "W", "E"))
 met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
     left_join(zns, by="deployment")
-#attributes(met_5min_df$datetime)$tzone <- "America/Los_Angeles"
+attributes(met_5min_df$datetime)$tzone <- "America/Los_Angeles"
                  
