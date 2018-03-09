@@ -43,7 +43,8 @@ col_names <- c("10m Wind\\\nSpeed (m/s)", "10m Wind\\\nDirection (deg)",
                "Ambient\\\nTemp.(<sup>o</sup>C)", "Relative\\\nHumidity (%)", 
                "Delta Temp.\\\n2m (<sup>o</sup>C)", 
                "Delta Temp.\\\n10m (<sup>o</sup>C)", 
-               "Solar\\\nRadiation (W/m<sup>2</sup>)")
+               paste0(ifelse(start_date < as.Date('2017-12-01'), "Net", "Solar"), 
+                      "\\\nRadiation (W/m<sup>2</sup>)"))
 for (i in 1:length(met_summary)){
     rownames(met_summary[[i]]) <- row_names
     colnames(met_summary[[i]]) <- col_names
