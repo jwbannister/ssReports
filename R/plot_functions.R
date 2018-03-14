@@ -4,14 +4,13 @@ event_plot <- function(locs, df1, background){
     valueseq <- c(10, 50, 150, 500)
     legend.plot <- df1 %>% filter(deployment==df1$deployment[1]) %>%
         plot_rose(., value='pm10', dir='wd', valueseq=valueseq,
-                  legend.title=bquote('P'*M[10]~'('*mu*'g/'*m^3*')'),
-                  palette='RdYlGn')
+                  legend.title=bquote('P'*M[10]~'('*mu*'g/'*m^3*')'))
     legnd <- g_legend(legend.plot)
     fl <- tempfile()
     for (j in unique(df1$deployment)){
         p <- filter(df1, deployment==j) %>% 
             plot_rose_image_only(., value='pm10', dir='wd', 
-                                 valueseq=valueseq, palette='RdYlGn')
+                                 valueseq=valueseq)
         png(filename=fl, bg="transparent")
         print(p)
         dev.off()

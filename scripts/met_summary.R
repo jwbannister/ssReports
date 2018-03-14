@@ -32,5 +32,4 @@ met_summary[[i]] <- met_summary[[i]] %>%
 met_summary[[i]][1, ] <- paste0(as.numeric(met_summary[[i]][1 , ])*100, "%")
 met_summary[[i]]$wd[2:4] <- "-"
 }
-
-
+met_summary <- met_summary[sort(names(met_summary))]

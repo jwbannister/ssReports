@@ -5,3 +5,6 @@ Rscript build_report.R 08-01-2017;
 Rscript build_report.R 09-01-2017; 
 Rscript build_report.R 10-01-2017; 
 Rscript build_report.R 11-01-2017; 
+Rscript build_report.R 12-01-2017; 
+Rscript build_report.R 01-01-2018; 
+Rscript build_report.R 02-01-2018; 
