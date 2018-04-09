@@ -70,7 +70,11 @@ query1 <- paste0("SELECT i.deployment, f.flagged_period, ff.flag, ",
                  "FROM flags.flagged_data f JOIN flags.flags ff ",
                  "ON f.flag_id = ff.flag_id ", 
                  "JOIN info.deployments i ",
-                 "ON f.deployment_id = i.deployment_id ") 
+                 "ON f.deployment_id = i.deployment_id ", 
+                 "WHERE i.deployment IN ('Bombay Beach', 'Sonny Bono', ", 
+                 "'Torres Martinez', 'Naval Test Base', ",
+                 "'Salton City', 'Salton Sea Park') ",
+                 "AND f.flagged_period::text NOT LIKE 'empty'::text")
 flag_pull <- query_db("saltonsea", query1)
 flag_pull$start.date <- substr(flag_pull$flagged_period, 3, 12)
 flag_pull$start.hour <- substr(flag_pull$flagged_period, 14, 21)
