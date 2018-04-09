@@ -131,15 +131,15 @@ image_df <- query_db("saltonsea", query1)
 attributes(image_df$datetime)$tzone <- "America/Los_Angeles"
 
 # pull 5 minute wind data
-query1 <- paste0("SELECT i.deployment, m.datetime, m.ws_2m AS ws ", 
+query1 <- paste0("SELECT i.deployment, m.datetime, COALESCE(m.ws_2m, m.ws_6m) AS ws ", 
                  "FROM met.met_5min m JOIN info.deployments i ",
                  "ON m.deployment_id = i.deployment_id ", 
                  "WHERE (datetime - '1 second'::interval)::date ",
                  "BETWEEN '", start_date, "'::date ",
                  "AND '", end_date, "'::date ",
-                 "AND i.deployment IN ('1001', '1004', '1102')")
+                 "AND i.deployment IN ('1001', 'AS01', '1102')")
 met_5min_pull <- query_db("saltonsea", query1)
-zns <- data.frame(deployment=c("1001", "1102", "1004"), 
+zns <- data.frame(deployment=c("1001", "1102", "AS01"), 
                   zone=c("N", "W", "E"))
 met_5min_df <- met_5min_pull[complete.cases(met_5min_pull), ] %>%
     left_join(zns, by="deployment")

@@ -15,8 +15,8 @@ zones <- data.frame(deployment=c("Torres Martinez", "Salton Sea Park",
                                  "Naval Test Base", "Salton City"), 
                     zone=c("N", "N", "E", "E", "W", "W"), 
                     camera=c(rep("Torres Martinez", 2), 
-                             rep("1003", 2), 
-                             rep("Salton City", 2)))
+                             "Bombay Beach", "Sonny Bono", 
+                             "Naval Test Base", "Salton City"))
 
 # detect dust events
 met_clean$date <- as.Date(met_clean$datetime %m-% minutes(1), 
