@@ -16,7 +16,7 @@ zones <- data.frame(deployment=c("Torres Martinez", "Salton Sea Park",
                     zone=c("N", "N", "E", "E", "W", "W"), 
                     camera=c(rep("Torres Martinez", 2), 
                              "Bombay Beach", "Sonny Bono", 
-                             "Naval Test Base", "Salton City"))
+                             "Salton City", "Naval Test Base"))
 
 # detect dust events
 met_clean$date <- as.Date(met_clean$datetime %m-% minutes(1), 
@@ -115,10 +115,16 @@ for (i in names(event_list)){
                 filter(date(datetime)==date(target.datetime) & zone==j) %>%
                 filter(hour(datetime)==worst_hour) %>%
                 mutate(delta = abs(difftime(datetime, target.datetime)))
-            pic.datetime <- filter(image_tmp, delta==min(delta))$datetime
-            image.key <- substring(filter(image_tmp, delta==min(delta))$s3_url, 49)
+            possible_images <- image_tmp %>% group_by(deployment) %>%
+                filter(delta==min(delta)) %>%
+                mutate(sort_field = factor(deployment, 
+                                           levels=filter(zones, zone==j)$deployment, 
+                                           ordered=T)) %>%
+                arrange(sort_field)
+            pic.deployment <- possible_images$deployment[1]
+            image.key <- substring(possible_images$s3_url[1], 49)
         }
-        if (length(image.key)!=0){
+        if (length(image.key)!=0 & !is.na(image.key)){
             image.file <- tempfile()
             S3_bucket_access(bucket="saltonimages", key=image.key, file=image.file)
             img <- jpeg::readJPEG(image.file)
@@ -132,7 +138,7 @@ for (i in names(event_list)){
                         plot.title = element_text(hjust=0.5)) +
                   annotation_custom(prelim.grob, xmin=-Inf, xmax=Inf, 
                                     ymin=-Inf, ymax=Inf) +
-                  ggtitle(zone_names[[j]])
+                  ggtitle(pic.deployment)
             image.grob <- ggplotGrob(p1)
         } else{
             p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
