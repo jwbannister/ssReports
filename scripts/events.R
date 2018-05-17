@@ -13,10 +13,8 @@ pm25_cutoff <- 35
 zones <- data.frame(deployment=c("Torres Martinez", "Salton Sea Park", 
                                  "Bombay Beach", "Sonny Bono", 
                                  "Naval Test Base", "Salton City"), 
-                    zone=c("N", "N", "E", "E", "W", "W"), 
-                    camera=c(rep("Torres Martinez", 2), 
-                             "Bombay Beach", "Sonny Bono", 
-                             "Salton City", "Naval Test Base"))
+                    zone=c("N", "N", "E", "E", "W", "W"))
+cam_pref <- list("N"=c(12, 13), "E"=c(10, 9, 11, 8), "W"=c(2, 7))
 
 # detect dust events
 met_clean$date <- as.Date(met_clean$datetime %m-% minutes(1), 
@@ -110,16 +108,16 @@ for (i in names(event_list)){
             worst_hour <- hour(tmp_pm[tmp_pm$pm10==max(tmp_pm$pm10), ]$datetime) - 1
             tmp_wind <- filter(daylight_wind, zone==j & hour(datetime)==worst_hour)
             target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime[1]
+            target.datetime <- format(target.datetime, tz="Etc/GMT+8")
             image_tmp <- image_df %>% 
-                left_join(tmp_zone, by=c("deployment"="camera")) %>%
+                left_join(zones, by="deployment") %>%
                 filter(date(datetime)==date(target.datetime) & zone==j) %>%
                 filter(hour(datetime)==worst_hour) %>%
                 mutate(delta = abs(difftime(datetime, target.datetime)))
-            possible_images <- image_tmp %>% group_by(deployment) %>%
+            possible_images <- image_tmp %>% group_by(image_deployment_id) %>%
                 filter(delta==min(delta)) %>%
-                mutate(sort_field = factor(deployment, 
-                                           levels=filter(zones, zone==j)$deployment, 
-                                           ordered=T)) %>%
+                mutate(sort_field = factor(image_deployment_id, 
+                                           levels=cam_pref[[j]]), ordered=T) %>%
                 arrange(sort_field)
             pic.deployment <- possible_images$deployment[1]
             image.key <- substring(possible_images$s3_url[1], 49)
