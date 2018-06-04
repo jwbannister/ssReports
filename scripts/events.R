@@ -1,7 +1,6 @@
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
-library(RS3)
 library(RColorBrewer)
 library(gridExtra)
 library(grid)
@@ -124,7 +123,7 @@ for (i in names(event_list)){
         }
         if (length(image.key)!=0 & !is.na(image.key)){
             image.file <- tempfile()
-            S3_bucket_access(bucket="saltonimages", key=image.key, file=image.file)
+            S3_save_object(bucket="saltonimages", key=image.key, file=image.file)
             img <- jpeg::readJPEG(image.file)
             prelim.grob <- grid::rasterGrob(img, interpolate=T)
             p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
