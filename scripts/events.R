@@ -4,6 +4,7 @@ library(ggplot2)
 library(RColorBrewer)
 library(gridExtra)
 library(grid)
+set_AWS_token()
 
 pm10_cutoff <- 150
 pm25_cutoff <- 35
@@ -70,12 +71,17 @@ for (i in names(event_list)){
     b <- select(event_df, deployment, datetime, value=ws) %>% 
         mutate(factor="Wind Speed (m/s)")
     plot_df <- rbind(a, b)
+    dummy <- met_clean %>% 
+        select(deployment, datetime, value=ws) %>% 
+        mutate(factor="Wind Speed (m/s)")
+    dummy$datetime <- rep(met_tmp$datetime[1], nrow(dummy))
     # build timeseries plot
     timeseries <- plot_df %>%
         arrange(deployment, datetime) %>% 
         ggplot(aes(x=datetime, y=value)) +
         geom_path(aes(color=deployment)) +
         facet_grid(factor ~ ., scales="free_y") +
+        geom_blank(data=dummy) + 
         scale_color_brewer(palette="Set1") +
         ylab("") + xlab("") +
         theme(legend.title=element_blank(), 
@@ -132,10 +138,13 @@ for (i in names(event_list)){
                         axis.text=element_blank(), 
                         axis.ticks=element_blank(),
                         legend.position="none", 
+                        plot.subtitle = element_text(hjust=0.5),
                         plot.title = element_text(hjust=0.5)) +
                   annotation_custom(prelim.grob, xmin=-Inf, xmax=Inf, 
                                     ymin=-Inf, ymax=Inf) +
-                  ggtitle(pic.deployment)
+                  ggtitle(pic.deployment,
+                          subtitle=paste0(possible_images$dir[1], " ", 
+                                          substring(possible_images$datetime[1], 12)))
             image.grob <- ggplotGrob(p1)
         } else{
             p1 <- ggplot(data.frame(x=1:10, y=1:10), aes(x=x, y=y)) +
@@ -161,8 +170,8 @@ for (i in names(event_list)){
                                event_list[[i]]$photos$N), ncol=3)
     dev.off()
     # build dustrose map
-#    plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
-#        filter(!is.na(pm10) &  !is.na(wd))
+    #    plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
+    #        filter(!is.na(pm10) &  !is.na(wd))
     plot_data <- event_df %>% select(deployment, datetime, pm10, wd) %>%
         filter(!is.na(pm10))
     wd_missing <- plot_data[is.na(plot_data$wd), 1:2]
@@ -198,7 +207,7 @@ for (i in names(event_list)){
     dev.off()
 }
 names(events) <- c("Deployment", "Date", 
-                   "24-hour PM<sub>10</sub> Avg. (ug/m<sup>3</sup>)", 
-                   "24-hour PM<sub>2.5</sub> Avg. (ug/m<sup>3</sup>)", 
-                   "valid.hours.pm10", "valid.hours.pm25", "valid.pm10", 
-                   "valid.pm25")
+               "24-hour PM<sub>10</sub> Avg. (ug/m<sup>3</sup>)", 
+               "24-hour PM<sub>2.5</sub> Avg. (ug/m<sup>3</sup>)", 
+               "valid.hours.pm10", "valid.hours.pm25", "valid.pm10", 
+               "valid.pm25")

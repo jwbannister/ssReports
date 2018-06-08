@@ -116,7 +116,8 @@ loc_df$x <- utmcoord$coords.x1
 loc_df$y <- utmcoord$coords.x2
 
 # pull photo data
-query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_url ", 
+query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_url, ", 
+                 "id.bearing ", 
                  "FROM images.images i ", 
                  "JOIN images.image_files f ON i.image_file_id=f.image_file_id ", 
                  "JOIN images.image_deployments id ", 
@@ -129,6 +130,7 @@ query1 <- paste0("SELECT i.datetime, d.deployment, i.image_deployment_id, f.s3_u
                  "AND '", end_date, "'::date;")
 image_df <- query_db("saltonsea", query1)
 attributes(image_df$datetime)$tzone <- "America/Los_Angeles"
+image_df$dir <- sapply(image_df$bearing, aiRsci::degree_to_cardinal)
 
 # pull 5 minute wind data
 query1 <- paste0("SELECT i.deployment, m.datetime, COALESCE(m.ws_2m, m.ws_6m) AS ws ", 
