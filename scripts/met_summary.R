@@ -18,18 +18,24 @@ temp <- met_clean %>% filter(deployment==i) %>%
     select(-deployment) %>%
     gather(measure, value, -datetime) %>%
     group_by(measure) %>%
-    summarize(data.capture=round(sum(!is.na(value))/data_hours, 2),
-              monthly.mean=round(mean(value, na.rm=T), 1), 
+    summarize(data.capture=sum(!is.na(value))/data_hours,
+              monthly.mean=mean(value, na.rm=T), 
               max.hour=ifelse(sum(!is.na(value))>0, 
-                              round(max(value, na.rm=T), 1), NA), 
+                              max(value, na.rm=T), NA), 
               min.hour=ifelse(sum(!is.na(value))>0, 
-                              round(min(value, na.rm=T), 1), NA))
-temp[is.na(temp)] <- "-"
+                              min(value, na.rm=T), NA))
+    temp[ , 2] <- sapply(temp[ , 2], 
+                         function (x) paste0(format(round(x, 2)*100, nsmall=0), "%"))
+    for (j in seq(1,7)){
+        round_num <- 1
+        temp[j, 3:5] <- sapply(temp[j, 3:5], 
+                       function (x) format(round(as.numeric(x), round_num), nsmall=1))
+    }
+temp[temp=='NaN' | temp =='NA'] <- "-"
 met_summary[[i]] <- as.data.frame(t(temp), optional=T)[-1, ]
 colnames(met_summary[[i]]) <- temp$measure
 met_summary[[i]] <- met_summary[[i]] %>%
     select(ws, wd, at_2m, rh_2m, delta_temp_2m, delta_temp_10m, solar_rad)
-met_summary[[i]][1, ] <- paste0(as.numeric(met_summary[[i]][1 , ])*100, "%")
 met_summary[[i]]$wd[2:4] <- "-"
 }
 met_summary <- met_summary[sort(names(met_summary))]

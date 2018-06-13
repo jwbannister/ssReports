@@ -60,7 +60,14 @@ cat("<p style=\"page-break-after:always;\"></p> \n")
 ```{r teom_table, echo=F, results='asis'}
 report_header(start_date, end_date, report_date)
 cat("\n## Data Summary - Particulate Monitoring\n<br>")
+row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")
+col_names <- c("PM<sub>10</sub> (ug/m<sup>3</sup>)", 
+                         "PM<sub>2.5</sub> (ug/m<sup>3</sup>)", 
+                         "Temperature (<sup>o</sup>C)", "Pressure (atm)", 
+                         "Relative Humidity (%)")
 for (i in names(teom_summary)){
+    rownames(teom_summary[[i]]) <- row_names
+    colnames(teom_summary[[i]]) <- col_names
     cat("<body>")
     pandoc.table(teom_summary[[i]], caption=cat("<h4>", i, "</h4>"), 
                  split.table=Inf)
@@ -114,20 +121,23 @@ if (comment_file %in% comment_list[ , 2]){
     system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
                   comment_list[ , 1][index]))
     comment_lines <- readLines(paste0(tempdir(), "/", comment_file)) 
+    comment_lines <- comment_lines[comment_lines != ""]
     comment_length <- length(comment_lines)
-    if ((nrow(split_events[[splits]]) + comment_length)<32){
+    comment_limit <- 26
+    if ((nrow(split_events[[splits]]) + comment_length)<comment_limit){
         cat(" \n\n## Comments \n")
         for (j in 1:length(comment_lines)){
             cat(" \n", comment_lines[j], " \n", sep="")
         }
     } else{
         split_comments <- list()
-        split_comments[[1]] <- comment_lines[1:(31-nrow(split_events[[splits]]))]
+        split_comments[[1]] <- 
+            comment_lines[1:((comment_limit-1)-nrow(split_events[[splits]]))]
         comment_splits <- 
-        ceiling((comment_length-length(split_comments[[1]]))/32) + 1
+            ceiling((comment_length-length(split_comments[[1]]))/comment_limit) + 1
         marker <- length(split_comments[[1]])
         for (i in 2:(comment_splits)){
-            split_comments[[i]] <- comment_lines[(marker+1):(marker+32)]
+            split_comments[[i]] <- comment_lines[(marker+1):(marker+comment_limit)]
             split_comments[[i]] <- split_comments[[i]][!is.na(split_comments[[i]])]
             marker <- marker + length(split_comments[[i]])
         }

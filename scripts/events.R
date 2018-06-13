@@ -11,10 +11,10 @@ pm25_cutoff <- 35
 
 # categorize sites into zones
 zones <- data.frame(deployment=c("Torres Martinez", "Salton Sea Park", 
-                                 "Bombay Beach", "Sonny Bono", 
+                                 "Bombay Beach", "Sonny Bono", "1003",  
                                  "Naval Test Base", "Salton City"), 
-                    zone=c("N", "N", "E", "E", "W", "W"))
-cam_pref <- list("N"=c(12, 13), "E"=c(10, 9, 11, 8), "W"=c(2, 7))
+                    zone=c("N", "N", "E", "E", "E", "W", "W"))
+cam_pref <- list("N"=c(12, 13), "E"=c(10, 9, 11, 8, 4), "W"=c(2, 7))
 
 # detect dust events
 met_clean$date <- as.Date(met_clean$datetime %m-% minutes(1), 
@@ -112,6 +112,9 @@ for (i in names(event_list)){
         } else{
             worst_hour <- hour(tmp_pm[tmp_pm$pm10==max(tmp_pm$pm10), ]$datetime) - 1
             tmp_wind <- filter(daylight_wind, zone==j & hour(datetime)==worst_hour)
+            if (nrow(tmp_wind)==0){
+                tmp_wind <- filter(daylight_wind, hour(datetime)==worst_hour)
+            }
             target.datetime <- tmp_wind[tmp_wind$ws==max(tmp_wind$ws), ]$datetime[1]
             target.datetime <- format(target.datetime, tz="Etc/GMT+8")
             image_tmp <- image_df %>% 

@@ -9,32 +9,32 @@ for (j in 1:nrow(pm_df)){
 }
 pm_clean <- pm_clean[ , 1:7]
 
-teom_summary <- vector(mode="list", length=5)
-names(teom_summary) <- c("PM<sub>10</sub> (ug/m<sup>3</sup>)", 
-                         "PM<sub>2.5</sub> (ug/m<sup>3</sup>)", 
-                         "Pressure (atm)", "Temperature (<sup>o</sup>C)", 
-                         "Relative Humidity (%)")
-row_names <- c("Data Capture", "Monthly Mean", "Max Hour", "Min Hour")
-for(i in 1:5){
-    col_ind <- names(pm_clean)[i+2]
-    round_ind <- ifelse(i==3, 3, 1)
-    month_df <- pm_clean %>% select_("deployment", col_ind) %>% group_by_("deployment") %>%
-        summarize_(data.capture=paste0("round(sum(!is.na(", col_ind, "))/", data_hours, 
-                                       "*100, ", 1, ")"),
-                   monthly.mean=paste0("round(mean(", col_ind, ", na.rm=T), ", 
-                                       round_ind, ")"), 
-                   max.hour=paste0("ifelse(sum(!is.na(", col_ind, "))>0, 
-                                   round(max(", col_ind, ", na.rm=T), ", 
-                                         round_ind, "), NA)"),
-                   min.hour=paste0("ifelse(sum(!is.na(", col_ind, "))>0, 
-                                   round(min(", col_ind, ", na.rm=T), ", 
-                                         round_ind, "), NA)"))
-    month_df[is.na(month_df)] <- "-"
-    month_df$data.capture <- paste0(month_df$data.capture, "%")
-    month_tbl <- as.data.frame(t(month_df), col.names=pm10_month$deployment, 
-                               optional=T)[-1, ]
-    colnames(month_tbl) <- month_df$deployment
-    rownames(month_tbl) <- row_names
-    teom_summary[[i]] <- month_tbl
+teom_summary <- vector(mode="list", length=length(areas))
+names(teom_summary) <- areas
+for (i in areas){
+temp <- pm_clean %>% filter(deployment==i) %>%
+    select(-deployment) %>%
+    gather(measure, value, -datetime) %>%
+    group_by(measure) %>%
+    summarize(data.capture=sum(!is.na(value))/data_hours,
+              monthly.mean=mean(value, na.rm=T), 
+              max.hour=ifelse(sum(!is.na(value))>0, 
+                              max(value, na.rm=T), NA), 
+              min.hour=ifelse(sum(!is.na(value))>0, 
+                              min(value, na.rm=T), NA))
+    temp[ , 2] <- sapply(temp[ , 2], 
+                         function (x) paste0(format(round(x, 2)*100, nsmall=0), "%"))
+    for (j in seq(1,5)){
+        if (j==4){
+            round_num <- 3
+        }else{
+            round_num <- 1
+        }
+        temp[j, 3:5] <- sapply(temp[j, 3:5], 
+                       function (x) format(round(as.numeric(x), round_num), nsmall=1))
+    }
+temp[temp=='NaN' | temp =='NA'] <- "-"
+teom_summary[[i]] <- as.data.frame(t(temp), optional=T)[-1, ]
+colnames(teom_summary[[i]]) <- temp$measure
 }
-
+teom_summary <- teom_summary[sort(names(teom_summary))]
