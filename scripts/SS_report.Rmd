@@ -88,7 +88,8 @@ cat("\n## Site Exceedance Days\n")
 cat("\n##### <a>Bold</a> values exceed the 24-hour NAAQS.\n<br>")
 events[[3]] <- tag_value(events[[3]], "a", 150)
 events[[4]] <- tag_value(events[[4]], "a", 35)
-splits <- ceiling(nrow(events)/30)
+split_limit <- 30
+splits <- ceiling(nrow(events)/split_limit)
 split_events <- vector(mode="list", length=splits)
 for (i in 1:splits){
     if (i>1){
@@ -97,7 +98,7 @@ for (i in 1:splits){
         cat("\n## Site Exceedance Days Continued\n")
         cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
     }
-    split_events[[i]] <- events[((30*(i-1))+1):(30*i), ]
+    split_events[[i]] <- events[((split_limit*(i-1))+1):(split_limit*i), ]
     split_events[[i]] <- split_events[[i]][complete.cases(split_events[[i]]), ]
     cat("<p style=\"font-size: 10pt;\">")
     pandoc.table(as.data.frame(select(split_events[[i]], 1:4)), split.table=Inf)
@@ -123,7 +124,7 @@ if (comment_file %in% comment_list[ , 2]){
     comment_lines <- readLines(paste0(tempdir(), "/", comment_file)) 
     comment_lines <- comment_lines[comment_lines != ""]
     comment_length <- length(comment_lines)
-    comment_limit <- 20
+    comment_limit <- split_limit + 2 
 #cat("<p style=\"page-break-after:always;\"></p> \n")
 #cat(" \n\n## Comments \n")
 #for (j in 1:length(comment_lines)){
