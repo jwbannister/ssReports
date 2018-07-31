@@ -123,7 +123,12 @@ if (comment_file %in% comment_list[ , 2]){
     comment_lines <- readLines(paste0(tempdir(), "/", comment_file)) 
     comment_lines <- comment_lines[comment_lines != ""]
     comment_length <- length(comment_lines)
-    comment_limit <- 26
+    comment_limit <- 20
+#cat("<p style=\"page-break-after:always;\"></p> \n")
+#cat(" \n\n## Comments \n")
+#for (j in 1:length(comment_lines)){
+#    cat(" \n", comment_lines[j], " \n", sep="")
+#}
     if ((nrow(split_events[[splits]]) + comment_length)<comment_limit){
         cat(" \n\n## Comments \n")
         for (j in 1:length(comment_lines)){
