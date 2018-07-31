@@ -85,7 +85,7 @@ pandoc.table(as.data.frame(invalid_spread), split.table=Inf)
 cat("</p>")
 
 cat("\n## Site Exceedance Days\n")
-cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
+cat("\n##### <a>Bold</a> values exceed the 24-hour NAAQS.\n<br>")
 events[[3]] <- tag_value(events[[3]], "a", 150)
 events[[4]] <- tag_value(events[[4]], "a", 35)
 splits <- ceiling(nrow(events)/30)
