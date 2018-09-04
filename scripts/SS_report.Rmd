@@ -84,26 +84,29 @@ cat("<p style=\"font-size: 8pt;\">")
 pandoc.table(as.data.frame(invalid_spread), split.table=Inf)
 cat("</p>")
 
-cat("\n## Site Exceedance Days\n")
-cat("\n##### <a>Bold</a> values exceed the 24-hour NAAQS.\n<br>")
 events[[3]] <- tag_value(events[[3]], "a", 150)
 events[[4]] <- tag_value(events[[4]], "a", 35)
 split_limit <- 30
-splits <- ceiling(nrow(events)/split_limit)
+splits <- max(ceiling(nrow(events)/split_limit), 1)
 split_events <- vector(mode="list", length=splits)
-for (i in 1:splits){
-    if (i>1){
-        cat("<p style=\"page-break-after:always;\"></p> \n")
-        report_header(start_date, end_date, report_date)
-        cat("\n## Site Exceedance Days Continued\n")
-        cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
+if (nrow(events) > 0){
+    cat("\n## Site Exceedance Days\n")
+    cat("\n##### <a>Bold</a> values exceed the 24-hour NAAQS.\n<br>")
+    for (i in 1:splits){
+        if (i>1){
+            cat("<p style=\"page-break-after:always;\"></p> \n")
+            report_header(start_date, end_date, report_date)
+            cat("\n## Site Exceedance Days Continued\n")
+            cat("\n##### <a>Bold</a> values exceed allowable limit.\n<br>")
+        }
+        split_events[[i]] <- events[((split_limit*(i-1))+1):(split_limit*i), ]
+        split_events[[i]] <- split_events[[i]][complete.cases(split_events[[i]]), ]
+        cat("<p style=\"font-size: 10pt;\">")
+        pandoc.table(as.data.frame(select(split_events[[i]], 1:4)), split.table=Inf)
+        cat("</p>")
     }
-    split_events[[i]] <- events[((split_limit*(i-1))+1):(split_limit*i), ]
-    split_events[[i]] <- split_events[[i]][complete.cases(split_events[[i]]), ]
-    cat("<p style=\"font-size: 10pt;\">")
-    pandoc.table(as.data.frame(select(split_events[[i]], 1:4)), split.table=Inf)
-    cat("</p>")
 }
+
 gdrive_comments <- system(paste0(getwd(), "/gdrive list ", 
                   "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents ",
                   "and mimeType != 'application/vnd.google-apps.folder'\" ", 
@@ -130,7 +133,8 @@ if (comment_file %in% comment_list[ , 2]){
 #for (j in 1:length(comment_lines)){
 #    cat(" \n", comment_lines[j], " \n", sep="")
 #}
-    if ((nrow(split_events[[splits]]) + comment_length)<comment_limit){
+    n_tmp <- ifelse(is.null(split_events[[splits]]), 0, nrow(split_events[[splits]]))
+    if ((n_tmp + comment_length)<comment_limit){
         cat(" \n\n## Comments \n")
         for (j in 1:length(comment_lines)){
             cat(" \n", comment_lines[j], " \n", sep="")
@@ -161,28 +165,30 @@ if (comment_file %in% comment_list[ , 2]){
         }
     }
 }
-#cat("</div>")
-cat("<p style=\"page-break-after:always;\"></p> \n")
 ```
 
 ```{r event_pages, echo=F, results='asis', fig.height=3.5}
-for (i in 1:length(event_list)){
-    report_header(start_date, end_date, report_date)
-    cat(paste0(" \n# Dust Event - ", 
-               format(as.Date(names(event_list[i])), "%m-%d-%Y"), 
-               " \n"))
-    cat(" \n## Sites in Exceedance \n")
-    cat("\n##### <a>Bold</a> values exceed allowable limit.\n")
-    cat("<body>")
-    pandoc.table(as.data.frame(filter(select(events, 1:4), 
-                        Date==names(event_list)[i])), split.table=Inf)
-    cat("</body>")
-    cat(paste0("<p>![](", event_list[[i]]$time_img, ")</p>"))
-    cat("<hr class=\"style2\">")
-    cat(paste0("<p>![](", event_list[[i]]$photo_img, ")</p>"))
-    cat("<center>")
-    print(event_list[[i]]$map)
-    cat("</center>")
-    cat("<p style=\"page-break-after:always;\"></p> \n")
+if (length(event_list>0)){
+#cat("</div>")
+cat("<p style=\"page-break-after:always;\"></p> \n")
+    for (i in 1:length(event_list)){
+        report_header(start_date, end_date, report_date)
+        cat(paste0(" \n# Dust Event - ", 
+                   format(as.Date(names(event_list[i])), "%m-%d-%Y"), 
+                   " \n"))
+        cat(" \n## Sites in Exceedance \n")
+        cat("\n##### <a>Bold</a> values exceed allowable limit.\n")
+        cat("<body>")
+        pandoc.table(as.data.frame(filter(select(events, 1:4), 
+                            Date==names(event_list)[i])), split.table=Inf)
+        cat("</body>")
+        cat(paste0("<p>![](", event_list[[i]]$time_img, ")</p>"))
+        cat("<hr class=\"style2\">")
+        cat(paste0("<p>![](", event_list[[i]]$photo_img, ")</p>"))
+        cat("<center>")
+        print(event_list[[i]]$map)
+        cat("</center>")
+        cat("<p style=\"page-break-after:always;\"></p> \n")
+    }
 }
 ```
