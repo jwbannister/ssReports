@@ -33,7 +33,7 @@ rmarkdown::render("SS_report.Rmd", output_file=fl1)
 # on pdxmod1
 # convert_command <- paste0("xvfb-run wkhtmltopdf --page-size letter ", 
 #                          "--javascript-delay 2000 ", fl1, " ", fl2) 
-convert_command <- paste0("xvfb-run wkhtmltopdf --page-size letter ", fl1, " ", fl2) 
+convert_command <- paste0("wkhtmltopdf --page-size letter ", fl1, " ", fl2) 
 system(convert_command)
 system(paste0("gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 ",
               "-dPDFSETTINGS=/default -dNOPAUSE -dQUIET -dBATCH ",

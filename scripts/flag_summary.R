@@ -3,14 +3,22 @@ library(tidyverse)
 library(lubridate)
 
 flag_df$start.datetime <- as.POSIXct(paste0(flag_df$start.date, " ",
-                                            flag_df$start.hour)) 
+                                            flag_df$start.hour), 
+                                     tz='America/Los_Angeles') 
 flag_df$end.datetime <- as.POSIXct(paste0(flag_df$end.date, " ",
-                                            flag_df$end.hour)) 
-flag_df$end.datetime <- 
-    sapply(flag_df$end.datetime, 
-           function(x) if_else(as.Date(x %m-% seconds(1))>end_date, 
-                              as.POSIXct(paste(end_date, "23:59:59")), x))
-flag_df$end.datetime <- as.POSIXct(flag_df$end.datetime, origin='1970-01-01')
+                                            flag_df$end.hour), 
+                                   tz='America/Los_Angeles') 
+
+flag_df$overshoot <- sapply(flag_df$end.datetime, function (x)
+            difftime(as.POSIXct(paste0(end_date, " 00:00:00"), 
+                                tz='America/Los_Angeles') %m+% days(1), x, 
+                                units="secs"))
+
+for (i in 1:nrow(flag_df)){
+    if (flag_df$overshoot[i] < 0){
+        flag_df$end.datetime[i] <- flag_df$end.datetime[i] + (flag_overshoot[i] - 1)
+    }
+}
 
 flag_df$interval <- difftime(flag_df$end.datetime,
                              flag_df$start.datetime, units="hours")

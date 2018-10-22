@@ -107,7 +107,7 @@ if (nrow(events) > 0){
     }
 }
 
-gdrive_comments <- system(paste0(getwd(), "/gdrive list ", 
+gdrive_comments <- system(paste0("gdrive list ", 
                   "-q \"'0B8qHESXOhs-DVmJjVTVxLXZvNms' in parents ",
                   "and mimeType != 'application/vnd.google-apps.folder'\" ", 
                   "-m 10000"), intern=T)  
@@ -122,7 +122,7 @@ if (report_span>1){
 }
 if (comment_file %in% comment_list[ , 2]){
     index <- which(comment_list[ , 2]==comment_file)
-    system(paste0(getwd(), "/gdrive download --path ", tempdir(), " ", 
+    system(paste0("gdrive download --path ", tempdir(), " ", 
                   comment_list[ , 1][index]))
     comment_lines <- readLines(paste0(tempdir(), "/", comment_file)) 
     comment_lines <- comment_lines[comment_lines != ""]
@@ -167,8 +167,8 @@ if (comment_file %in% comment_list[ , 2]){
 }
 ```
 
-```{r event_pages, echo=F, results='asis', fig.height=3.5}
-if (length(event_list>0)){
+```{r event_pages, echo=F, results='asis', fig.height=3}
+if (length(event_list)>0){
 #cat("</div>")
 cat("<p style=\"page-break-after:always;\"></p> \n")
     for (i in 1:length(event_list)){
