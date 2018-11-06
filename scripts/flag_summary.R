@@ -16,7 +16,7 @@ flag_df$overshoot <- sapply(flag_df$end.datetime, function (x)
 
 for (i in 1:nrow(flag_df)){
     if (flag_df$overshoot[i] < 0){
-        flag_df$end.datetime[i] <- flag_df$end.datetime[i] + (flag_overshoot[i] - 1)
+        flag_df$end.datetime[i] <- flag_df$end.datetime[i] + (flag_df$overshoot[i] - 1)
     }
 }
 
