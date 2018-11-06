@@ -39,7 +39,7 @@ system(paste0("gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 ",
               "-dPDFSETTINGS=/default -dNOPAUSE -dQUIET -dBATCH ",
               "-dDetectDuplicateImages -dCompressFonts=true -r150 ",
               "-sOutputFile=", tempdir(), "/", file_name, " ", fl2))
-system(paste0(path.expand(getwd()), "/gdrive upload ", 
+system(paste0("/gdrive upload ", 
               "-p 0B8qHESXOhs-DMzlOcUZHS1ptdXc ", tempdir(), "/", file_name))
 
 # save workspace if needed for debugging
