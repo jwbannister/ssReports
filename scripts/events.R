@@ -6,6 +6,7 @@ library(gridExtra)
 library(grid)
 library(ggmap)
 set_AWS_token()
+google_key = Sys.getenv("SALTON_MAPS_KEY")
 
 pm10_cutoff <- 150
 pm25_cutoff <- 35
@@ -55,7 +56,7 @@ ext <- sp::SpatialPointsDataFrame(coords=data.frame(x=c(-116.25, -115.4),
 background <- photo_background(ext@coords[1], ext@coords[2], 
                                ext@coords[3], ext@coords[4], 
                                zone="11N", utm_bounds=F, 
-                               key="AIzaSyC0WyHzpkrubyvhsfWs8CgyP2o_sNQ8fH8")
+                               key=google_key)
 # set coordinates for determining daylight hours
 salton_sea <- matrix(c(-115.8434, 33.3286), nrow=1) 
 
